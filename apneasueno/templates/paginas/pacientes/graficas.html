@@ -1,0 +1,318 @@
+{% extends "paginas/base.html" %}
+{% load static %}
+
+{% block titulo %} Estadísticas de Pacientes {% endblock %}
+
+{% block contenido %}
+<div class="container my-4">
+    <h4 class="mb-4">📊 Estadísticas de pacientes</h4>
+
+    <a href="{% url 'pacientes_doctor' %}" class="btn btn-outline-secondary mb-3">← Volver</a>
+
+    <div class="card mb-4">
+        <div class="card-header">Distribución por nivel de riesgo</div>
+        <div class="card-body">
+            <div class="chart-container">
+                <canvas id="riesgoChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">Distribución por sexo</div>
+        <div class="card-body">
+            <div class="chart-container">
+                <canvas id="sexoChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <button id="descargarPDF" class="btn btn-success mt-3">📥 Descargar PDF</button>
+</div>
+
+<!-- Estilos -->
+<style>
+.chart-container {
+    max-width: 450px;
+    margin: auto;
+}
+canvas {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1;
+}
+#sexoChart {
+    height: 300px !important;
+    aspect-ratio: unset;
+}
+</style>
+
+<!-- Scripts necesarios -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- Datos desde Django -->
+{{ riesgo_data|json_script:"riesgo-data" }}
+{{ sexo_data|json_script:"sexo-data" }}
+
+<!-- Crear gráficas -->
+<script>
+    const riesgoData = JSON.parse(document.getElementById('riesgo-data').textContent);
+    const sexoData = JSON.parse(document.getElementById('sexo-data').textContent);
+
+    const riesgoCtx = document.getElementById('riesgoChart').getContext('2d');
+    new Chart(riesgoCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Alto riesgo de AOS', 'Riesgo intermedio de AOS', 'Bajo riesgo de AOS'],
+            datasets: [{
+                data: [
+                    riesgoData["Alto riesgo de AOS"],
+                    riesgoData["Riesgo intermedio de AOS"],
+                    riesgoData["Bajo riesgo de AOS"]
+                ],
+                backgroundColor: ['#dc3545', '#ffc107', '#198754'],
+            }]
+        },
+        options: {
+            plugins: {
+                datalabels: {
+                    color: '#fff',
+                    font: {
+                        weight: 'bold'
+                    },
+                    formatter: (value) => value
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
+    });
+
+    const sexoCtx = document.getElementById('sexoChart').getContext('2d');
+    new Chart(sexoCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Masculino', 'Femenino'],
+            datasets: [{
+                label: 'Cantidad',
+                data: [sexoData["Masculino"], sexoData["Femenino"]],
+                backgroundColor: ['#0d6efd', '#e83e8c']
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    precision: 0
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
+</script>
+
+<!-- Descargar PDF con gráficas -->
+<script>
+    function getHighResImage(canvas, scale = 3) {
+        const tmpCanvas = document.createElement('canvas');
+        tmpCanvas.width = canvas.width * scale;
+        tmpCanvas.height = canvas.height * scale;
+        const ctx = tmpCanvas.getContext('2d');
+        ctx.scale(scale, scale);
+        ctx.drawImage(canvas, 0, 0);
+        return tmpCanvas.toDataURL('image/png');
+    }
+
+    function loadImageAsBase64(url) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.crossOrigin = "Anonymous";
+            img.onload = function () {
+                const canvas = document.createElement("canvas");
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0);
+                const dataURL = canvas.toDataURL("image/png");
+                resolve(dataURL);
+            };
+            img.src = url;
+        });
+    }
+
+    document.getElementById('descargarPDF').addEventListener('click', async () => {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF("p", "mm", "a4");
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const margin = 15;
+        const midX = pageWidth / 2;
+
+        const riesgoCanvas = document.getElementById('riesgoChart');
+        const sexoCanvas = document.getElementById('sexoChart');
+        const riesgoImg = getHighResImage(riesgoCanvas);
+        const sexoImg = getHighResImage(sexoCanvas);
+
+        const logoUrl = "{% static 'img/hospital.png' %}";
+        const logoBase64 = await loadImageAsBase64(logoUrl);
+
+        const riesgoData = JSON.parse(document.getElementById('riesgo-data').textContent);
+        const sexoData = JSON.parse(document.getElementById('sexo-data').textContent);
+
+        // === ENCABEZADO ===
+        pdf.addImage(logoBase64, "PNG", margin, 10, 20, 20);
+        pdf.setFont("times", "bold");
+        pdf.setFontSize(25);
+        pdf.text("Unidad del Sueño", midX, 18, { align: "center" });
+
+        const fecha = new Date().toLocaleDateString();
+        pdf.setFont("times", "italic");
+        pdf.setFontSize(15);
+        pdf.text(`Fecha: ${fecha}`, pageWidth - margin, 25, { align: 'right' });
+
+        // === PRIMERA SECCIÓN ===
+        let y = 35;
+
+        // === LÍNEA HORIZONTAL ANTES DE LA PRIMERA GRÁFICA ===
+        pdf.setDrawColor(150);
+        pdf.setLineWidth(0.3);
+        pdf.line(margin, y, pageWidth - margin, y);
+        y += 15;
+
+        pdf.setFont("times", "bold");  // titulo
+        pdf.setFontSize(18);
+        pdf.text("Gráfica de Riesgo", midX + 25, y); //30 mm a la derecha
+        y += 8;
+
+        // Descripción a la izquierda
+        const textoRiesgo = [
+            "Esta gráfica muestra los niveles de riesgo de", 
+            "AOS (Apnea Obstructiva del Sueño)" ,
+            "detectados en los pacientes.", 
+            "Se clasifican en:",
+            ` Alto riesgo: ${riesgoData["Alto riesgo de AOS"]}`,
+            ` Riesgo intermedio: ${riesgoData["Riesgo intermedio de AOS"]}`,
+            ` Bajo riesgo: ${riesgoData["Bajo riesgo de AOS"]}`
+        ];
+        pdf.setFont("times", "normal");  //texto
+        pdf.setFontSize(15);
+
+        let textY = y + 15; // variable para bajar el texto 
+
+        textoRiesgo.forEach(line => {
+            if (line.includes("Alto riesgo:")) {
+                const partes = line.split(":");
+                pdf.setFont("times", "bold");
+                pdf.text(`• ${partes[0]}`, margin, textY);
+                pdf.setFont("times", "normal");
+                pdf.text(`: ${riesgoData["Alto riesgo de AOS"]}`, margin + 30, textY);
+            } else if (line.includes("Riesgo intermedio:")) {
+                const partes = line.split(":");
+                pdf.setFont("times", "bold");
+                pdf.text(`• ${partes[0]}`, margin, textY);
+                pdf.setFont("times", "normal");
+                pdf.text(`: ${riesgoData["Riesgo intermedio de AOS"]}`, margin + 48, textY);
+            } else if (line.includes("Bajo riesgo:")) {
+                const partes = line.split(":");
+                pdf.setFont("times", "bold");
+                pdf.text(`• ${partes[0]}`, margin, textY);
+                pdf.setFont("times", "normal");
+                pdf.text(`: ${riesgoData["Bajo riesgo de AOS"]}`, margin + 31, textY);
+            } else {
+                pdf.setFont("times", "normal");
+                pdf.text(line, margin, textY);
+            }
+
+            textY += 8;
+        });
+
+
+        // Imagen a la derecha más grande
+        // x + y + ancho + alto
+        // x: horizontal borde izquierdo del pdf
+        pdf.addImage(riesgoImg, "PNG", midX - 5, y, 110, 90);
+
+        // NUEVA Y para sección siguiente
+        y = Math.max(textY, y + 95);
+        y += 10;
+
+        // === LÍNEA HORIZONTAL DIVISORIA ===
+        pdf.setDrawColor(150);
+        pdf.setLineWidth(0.3);
+        pdf.line(margin, y, pageWidth - margin, y);
+        y += 20;
+
+        // === SEGUNDA SECCIÓN ===
+        pdf.setFont("times", "bold");  // titulo
+        pdf.setFontSize(18);
+        pdf.text("Gráfica por Sexo", midX - 70, y);
+        y += 8;
+
+        // Imagen a la izquierda
+        pdf.addImage(sexoImg, "PNG", margin, y, 80, 60);
+
+        // Texto a la derecha
+        const textoSexo = [
+            "Distribución por sexo:",
+            "Cantidad de pacientes según sexo",
+            "registrado:",
+            `Masculino: ${sexoData["Masculino"]}`,
+            `Femenino: ${sexoData["Femenino"]}`
+        ];
+        pdf.setFont("times", "normal");  //texto
+        pdf.setFontSize(15);
+
+        let textSexoY = y + 15; // variable para bajar el texto 
+        
+        textoSexo.forEach(line => {
+            if (line.includes("Masculino:")) {
+                const partes = line.split(":");
+                pdf.setFont("times", "bold");
+                pdf.text(`• ${partes[0]}`, midX + 5, textSexoY);
+                pdf.setFont("times", "normal");
+                pdf.text(`: ${sexoData["Masculino"]}`, midX + 35, textSexoY);
+            } else if (line.includes("Femenino:")) {
+                const partes = line.split(":");
+                pdf.setFont("times", "bold");
+                pdf.text(`• ${partes[0]}`, midX + 5, textSexoY);
+                pdf.setFont("times", "normal");
+                pdf.text(`: ${sexoData["Femenino"]}`, midX + 35, textSexoY);
+            } else {
+                pdf.setFont("times", "normal");
+                pdf.text(line, midX + 5, textSexoY);
+            }
+            textSexoY += 8; //espacio entre texto
+        });
+
+        // === LÍNEA HORIZONTAL DESPUÉS DE LA SEGUNDA GRÁFICA ===
+        pdf.setDrawColor(150);
+        pdf.setLineWidth(0.3);
+        pdf.line(margin, textSexoY + 25, pageWidth - margin, textSexoY + 25); // primer 20 izquierda segundo 20 derecha (nos permite bajar la linea)
+
+
+
+        // PIE DE PÁGINA
+        pdf.setFontSize(15);
+        pdf.setTextColor(100); // Gris medio (puedes usar valores del 0 al 255)
+        pdf.text("Departamento de Instrumentación", midX, 287, { align: "center" });
+
+
+
+        // DESCARGAR
+        pdf.save("reporte_estadisticas.pdf");
+    });
+</script>
+
+
+
+
+
+{% endblock %}

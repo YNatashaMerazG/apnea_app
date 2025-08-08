@@ -1,0 +1,137 @@
+
+/* EDICION BARRA PRINCIPAL*/
+.navbar {
+    background-color: #cce5ff !important;
+}
+
+.navbar .nav-link {
+    font-size: 1.1rem;         /* tamaño de letra un poco más grande */
+    padding: 10px 20px;        /* más espacio interno */
+    color: #004085 !important;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar .nav-link:hover {
+    background-color: #b8daff;
+    color: #002752 !important;
+    border-radius: 5px;
+    transform: scale(1.1);
+}
+
+/* EDICION TARJETAS DE INICIO DE SESION*/
+/* Efecto al pasar sobre la tarjeta */
+.card-hover {
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.card-hover:hover {
+    transform: scale(1.05); /* Agranda un poco */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Sombra más intensa */
+    border: 1px solid #007bff33; /* Borde sutil azul */
+}
+
+/* TITULO DEL FORMULARIO */
+.contenedor-form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+/* FORMULARIO */
+/* Fondo verde suave, con sombra y borde sutil */
+
+/* Inputs, selects y textareas estilizados */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+select,
+textarea {
+    font-size: 1.1em;
+    padding: 12px 15px;
+    width: 100%;
+    margin-bottom: 18px;
+    border-radius: 8px;
+    border: 1.5px solid #9ccc9c;
+    background-color: #f9fff9;
+    transition: border-color 0.3s ease;
+    height: 38px;
+}
+
+/* Estilo para textarea con altura ajustada */
+textarea {
+    height: 110px;
+    resize: vertical;
+}
+
+
+
+/* Radios un poco más grandes y con espacio */
+input[type="radio"] {
+    transform: scale(1.2);
+    margin-right: 8px;
+}
+
+/* Botones estilizados */
+.btn {
+    font-size: 1.15em;
+    padding: 12px 26px;
+    margin-right: 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Botón enviar */
+.btn-success {
+    background-color: #4caf50;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #3e8e41;
+}
+
+/* Botón cancelar */
+.btn-primary {
+    background-color: #2e7d32;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #27692a;
+}
+
+/* Etiquetas un poco más grandes y negrita */
+label {
+    font-size: 1.15em;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+    color: #2f4f2f;
+}
+
+/* Espaciado general */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* MOSTRAR TODOS  */
+/* Boton de agregar paciente a la derecha  */
+.card-header {
+    text-align: right;
+}
+
+.bg-info-light {
+  background-color: #d1ecf1 !important; /* azul muy claro */
+  color: #0c5460 !important; /* texto azul oscuro para contraste */
+}
+
+/* TITULO DEL PASE */
+
+
+
+
+

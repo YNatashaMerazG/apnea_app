@@ -1,0 +1,34 @@
+{% extends "paginas/base.html" %}
+
+{% block titulo %} DOCTOR LOGIN {% endblock %}
+
+{% block contenido %} 
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="card p-4 shadow" style="background-color: #e7f1ff; width: 100%; max-width: 400px;">
+    <h2 class="text-center mb-2">Inicio de Sesión</h2>
+    <h2 class="text-center mb-3">Doctor</h2>
+    
+   <form method="post" class="form-login">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-primary">Iniciar sesión</button> <!-- Boton para Iniciar sesion -->
+          <a class="btn btn-outline-danger" href="{% url 'inicio' %}">❌ Cancelar</a> <!-- Boton para Cancelar -->
+      </div>
+
+    </form>
+
+    <p class="mt-3 text-center">
+      <a href="{% url 'recuperar_contrasena' %}">¿Olvidaste tu contraseña?</a>
+    </p>
+
+    {% if messages %}
+      <ul class="alert alert-warning mt-3">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

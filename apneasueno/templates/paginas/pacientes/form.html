@@ -1,0 +1,101 @@
+
+<div class="container mt-4">
+  <div class="card shadow rounded-4">
+    <div class="card-header bg-primary text-white text-center fs-4">
+      Cuestionario STOP-BANG
+    </div>
+    <div class="card-body p-4">
+      <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <!-- IMC -->
+        <div class="mb-3">
+          <label class="form-label fw-bold">IMC calculado:</label>
+          <span class="badge bg-info text-dark fs-6" id="imc_display">--</span>
+        </div>
+
+        <!-- STOP-BANG -->
+        <div class="mb-3">
+          <label class="form-label fw-bold">Puntuación STOP-BANG:</label>
+          <span class="badge bg-warning text-dark fs-6" id="stopbang_score">--</span>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold">Riesgo estimado:</label>
+          <div id="stopbang_risk" class="alert alert-secondary py-2 px-3 mb-0">--</div>
+        </div>
+
+        <!-- Botones -->
+        <div class="d-flex justify-content-between mt-4">
+          <input class="btn btn-success px-4" type="submit" value="✅ Enviar información" />
+          <a class="btn btn-outline-danger px-4" href="{% url 'inicio' %}">❌ Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Script para calcular IMC en tiempo real -->
+<script>
+  function calcularIMC() {
+    const peso = parseFloat(document.getElementById('id_peso')?.value);
+    const estatura = parseFloat(document.getElementById('id_estatura')?.value);
+    const imc = peso && estatura ? (peso / (estatura ** 2)).toFixed(2) : '--';
+    document.getElementById('imc_display').innerText = imc;
+
+    // También recalculamos STOP-BANG si IMC cambia
+    calcularSTOPBANG(imc);
+  }
+
+  function calcularSTOPBANG(imcValue) {
+    let puntos = 0;
+
+    // Preguntas tipo checkbox o radio: verificar si están seleccionadas
+    const ronca = document.querySelector('input[name="ronca"]:checked')?.value;
+    const cansado = document.querySelector('input[name="cansado"]:checked')?.value;
+    const observado = document.querySelector('input[name="observado"]:checked')?.value;
+    const presion_alta = document.querySelector('input[name="presion_alta"]:checked')?.value;
+
+    if (ronca === 'True') puntos++;
+    if (cansado === 'True') puntos++;
+    if (observado === 'True') puntos++;
+    if (presion_alta === 'True') puntos++;
+
+
+    // IMC
+    const imc = parseFloat(imcValue);
+    if (imc && imc > 35) puntos++;
+
+    // Circunferencia del cuello
+    const cuello = parseFloat(document.getElementById('id_cuello')?.value);
+    if (cuello && cuello > 40) puntos++;
+
+    // Mostrar puntaje
+    document.getElementById('stopbang_score').innerText = `${puntos} / 6`;
+
+    // Mostrar riesgo
+    let riesgo = '--';
+    if (puntos <= 1) riesgo = 'Bajo riesgo de AOS';
+    else if (puntos <= 3) riesgo = 'Riesgo intermedio de AOS';
+    else riesgo = 'Alto riesgo ';
+
+    document.getElementById('stopbang_risk').innerText = riesgo;
+  }
+
+  // Eventos para inputs
+  document.getElementById('id_peso')?.addEventListener('input', calcularIMC);
+  document.getElementById('id_estatura')?.addEventListener('input', calcularIMC);
+  document.getElementById('id_cuello')?.addEventListener('input', () => {
+    calcularSTOPBANG(document.getElementById('imc_display').innerText);
+  });
+
+  ['id_ronca', 'id_cansado', 'id_observado', 'id_presion_alta'].forEach(id => {
+    document.getElementById(id)?.addEventListener('change', () => {
+      calcularSTOPBANG(document.getElementById('imc_display').innerText);
+    });
+  });
+</script>
+
+

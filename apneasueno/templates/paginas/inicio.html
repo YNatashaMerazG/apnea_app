@@ -1,0 +1,35 @@
+{% extends "paginas/base.html" %}
+{% load static %}
+{% block contenido %} 
+
+<div class="container text-center mt-5">
+    <h1 class="mb-4">Bienvenidos</h1>
+    <p class="lead">Seleccione cómo desea ingresar:</p>
+
+    <div class="row justify-content-center mt-4">
+        <!-- Sección para pacientes -->
+        <div class="col-md-5 mb-4 me-md-3">
+            <div class="card shadow p-4 card-hover">
+                <img src="{% static 'img/imgpaciente3.png' %}" class="img-fluid mb-3 mx-auto d-block" style="width: 120px;" alt="Paciente">
+                <h3>Paciente</h3>
+                <p>Si es tu primera vez, completa el cuestionario. Si ya ingresaste antes, consulta tus resultados.</p>
+                <a href="{% url 'paciente_login' %}" class="btn btn-success m-2">Primera vez</a>
+                <a href="{% url 'pacientes' %}" class="btn btn-outline-success m-2">Ya tengo número de registro</a>
+            </div> 
+        </div>
+
+        <!-- Sección para doctores -->
+        <div class="col-md-5 mb-4 ms-md-3">
+            <div class="card shadow p-4 card-hover">
+                <img src="{% static 'img/imgdoctor2.png' %}" class="img-fluid mb-3 mx-auto d-block" style="width: 150px;" alt="Doctor">
+                <h3>Doctor</h3>
+                <p>Ingresa con tu cuenta o regístrate si aún no tienes una.</p>
+                <a href="{% url 'doctor_login' %}" class="btn btn-primary m-2">Iniciar sesión</a>
+                <a href="{% url 'doctor_register' %}" class="btn btn-outline-primary m-2">Registrarse</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
