@@ -1,12 +1,16 @@
 from django.urls import path
+from django.urls import path, include
 from . import views
 from django.contrib.auth.views import LogoutView #salir de la sesion
+from django.contrib import admin
 from .views import pacientes_doctor
 from .views import graficas_view  
 
 
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('apneasueno.urls')),
     path('', views.inicio, name='inicio'),
     path('nosotros', views.nosotros, name='nosotros'),
     path('pacientes', views.pacientes, name='pacientes'), #lista
