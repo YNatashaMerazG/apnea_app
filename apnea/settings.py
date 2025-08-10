@@ -91,14 +91,6 @@ DATABASES = {
     }
 }
 
-print("Cargando settings.py...")
-print("DB HOST:", DATABASES['default']['HOST'])
-
-
-
-
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -140,8 +132,13 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-
+# Archivos estáticos (CSS, JS, imágenes de la app)
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Archivos subidos por el usuario
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
