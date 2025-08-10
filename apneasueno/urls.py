@@ -10,7 +10,6 @@ from .views import graficas_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('apneasueno.urls')),
     path('', views.inicio, name='inicio'),
     path('nosotros', views.nosotros, name='nosotros'),
     path('pacientes', views.pacientes, name='pacientes'), #lista
@@ -26,6 +25,4 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='doctor_login'), name='logout'), # Salir de la sesion
     path('pacientes/todos/', pacientes_doctor, name='pacientes_doctor'), #Lista de los doctores
     path('graficas/', graficas_view, name='graficas') #graficas
-
- 
 ]
