@@ -13,9 +13,14 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 
+print("=== Cargando settings.py ===")
+print("Ruta absoluta:", os.path.abspath(__file__))
+print("DB Host:", 'NatashaMeraz.mysql.pythonanywhere-services.com')  # o el valor que tengas
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -26,7 +31,7 @@ SECRET_KEY = 'django-insecure-d6nr=z_5v^nl=kqq140p%n+*(!$9u6=8x22*!=2cfvtqv$bk7p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['natashameraz.pythonanywhere.com']
 
 
 # Application definition
@@ -78,13 +83,21 @@ WSGI_APPLICATION = 'apnea.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pacientes',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOTS': 'localhost',
-        'PORT': '3306'
+        'NAME': 'NatashaMeraz$pacientes',   # nombre exacto
+        'USER': 'NatashaMeraz',
+        'PASSWORD': 'yoscar123',  # tu contraseña
+        'HOST': 'NatashaMeraz.mysql.pythonanywhere-services.com',
+        'PORT': '3306',
     }
 }
+
+print("Cargando settings.py...")
+print("DB HOST:", DATABASES['default']['HOST'])
+
+
+
+
+
 
 
 # Password validation
