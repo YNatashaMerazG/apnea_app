@@ -135,9 +135,9 @@ STATICFILES_DIRS = [
 # Archivos estáticos (CSS, JS, imágenes de la app)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # donde guardas tus imágenes
+    BASE_DIR / "static",
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # donde Django las copiará al hacer collectstatic
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
