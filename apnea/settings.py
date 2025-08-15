@@ -56,7 +56,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'apnea.urls'
+ROOT_URLCONF = 'apneasueno.urls'
 
 TEMPLATES = [
     {
