@@ -27,4 +27,6 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='doctor_login'), name='logout'), # Salir de la sesion
     path('pacientes/todos/', pacientes_doctor, name='pacientes_doctor'), #Lista de los doctores
     path('graficas/', graficas_view, name='graficas') #graficas
+    path('paciente/exito/<int:paciente_id>/', views.paciente_exito, name='paciente_exito'), #envio de formulario exitoso
+
 ]

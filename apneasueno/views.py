@@ -18,12 +18,10 @@ from .forms import PacienteForm
 from .forms import DoctorLoginForm
 from .models import PerfilDoctor
 from .forms import RestablecerContrasenaForm
-
-
-
-
 from weasyprint import HTML
 from datetime import datetime
+
+
 # Create your views here.
 
 def inicio(request): #Funcion que se le envia una solicitud (vista se llama inicio)
@@ -53,11 +51,18 @@ def paciente_login(request):
     if request.method == 'POST':
         form = PacienteForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('pacientes')
+            paciente = form.save()  # Guardar y obtener el objeto paciente
+            messages.success(request, "✅ Cuestionario realizado con éxito")
+            #return redirect('pacientes')
+            return redirect('paciente_exito', paciente_id=paciente.id)  # Redirigir a página de éxito
     else:
         form = PacienteForm()
     return render(request, 'paginas/pacientes/crear.html', {'form': form})
+
+#envio exitoso encuesta
+def paciente_exito(request, paciente_id):
+    paciente = Paciente.objects.get(id=paciente_id)
+    return render(request, 'paginas/pacientes/exito.html', {'paciente': paciente})
 
 def crear(request):
     if request.method == 'POST':

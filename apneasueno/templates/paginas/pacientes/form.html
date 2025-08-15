@@ -5,6 +5,25 @@
       Cuestionario STOP-BANG
     </div>
     <div class="card-body p-4">
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success text-center mb-3">
+          {{ message }}
+        </div>
+      {% endfor %}
+  
+    <!-- Botón para generar PDF -->
+    {% if paciente %}
+      <div class="text-center mb-3">
+        <a href="{% url 'generar_pdf' paciente.id %}" class="btn btn-info">
+          📄 Generar PDF
+        </a>
+      </div>
+      {% endif %}
+    {% endif %}
+
+
       <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
         {% csrf_token %}
         {{ form.as_p }}
