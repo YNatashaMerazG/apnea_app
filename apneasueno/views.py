@@ -150,7 +150,7 @@ def pacientes(request):
         pacientes = Paciente.objects.filter(
             Q(id__icontains=query) |
             Q(nombres__icontains=query) |
-            Q(apellidos__icontains=query)
+            Q(apellidos__icontains=query) 
         )
 
     es_doctor = False
