@@ -22,7 +22,7 @@ urlpatterns = [
     path('paciente/<str:paciente_id>/pdf/', views.generar_pdf, name='generar_pdf'), #generacion de pdf
     path('doctor_login/', views.doctor_login_view, name='doctor_login'), #para ingresar doc
     path('recuperar_contrasena', views.restablecer_contrasena, name='recuperar_contrasena'),
-    path('logout/', LogoutView.as_view(next_page='doctor_login'), name='logout'), # Salir de la sesion
+    path('logout/', views.salir, name='logout'), # Salir de la sesion
     path('pacientes/todos/', pacientes_doctor, name='pacientes_doctor'), #Lista de los doctores
     path('graficas/', graficas_view, name='graficas'), #graficas
     path('paciente/exito/<int:paciente_id>/', views.paciente_exito, name='paciente_exito'), #envio de formulario exitoso

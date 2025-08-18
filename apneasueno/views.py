@@ -6,11 +6,14 @@ from django.db.models import Count
 from django.template.loader import render_to_string
 from django.templatetags.static import static
 from django.contrib.auth.models import Group
+from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 from django.contrib import messages
 from django.utils import timezone
+from django.shortcuts import redirect
 from weasyprint import HTML
 from .models import Paciente
 from .forms import DoctorRegisterForm
@@ -75,8 +78,6 @@ def crear(request):
     return render(request, 'paginas/pacientes/crear.html', {'form': form})
 
 #REGISTRO DEL DOCTOR (asignados al grupo doctores automaticamente)
-from django.contrib.auth.models import Group
-
 def doctor_register(request):
     if request.method == 'POST':
         form = DoctorRegisterForm(request.POST)
@@ -242,4 +243,9 @@ def graficas_view(request):
 
     from django.templatetags.static import static
 
+
+#salir de la sesion
+def salir(request):
+    logout(request)  # Cierra la sesión
+    return redirect('doctor_login')  # Redirige al login
 
