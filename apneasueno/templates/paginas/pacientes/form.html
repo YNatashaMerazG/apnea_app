@@ -128,24 +128,21 @@
       e.preventDefault(); // Bloquear envío
       alert("⚠️ Debes calcular IMC, puntuación y riesgo antes de enviar.");
 
-      // 🔹 Limpiar campos de entrada
-      document.getElementById("id_peso")?.value = "";
-      document.getElementById("id_estatura")?.value = "";
-      document.getElementById("id_cuello")?.value = "";
+      // 🔹 Resetear todos los inputs dentro del formulario
+      this.querySelectorAll("input").forEach(el => {
+        if (el.type === "text" || el.type === "number" || el.type === "email") {
+          el.value = ""; // limpia campos de texto/número/email
+        }
+        if (el.type === "radio" || el.type === "checkbox") {
+          el.checked = false; // desmarca radios y checkboxes
+        }
+      });
 
       // 🔹 Resetear visualización
       document.getElementById("imc_display").innerText = "--";
       document.getElementById("stopbang_score").innerText = "--";
       document.getElementById("stopbang_risk").innerText = "--";
-
-      // 🔹 También limpiar checkboxes/radios
-      ["id_ronca", "id_cansado", "id_observado", "id_presion_alta"].forEach(id => {
-        document.getElementById(id)?.checked = false;
-      });
     }
   });
 </script>
-
-
-
 
