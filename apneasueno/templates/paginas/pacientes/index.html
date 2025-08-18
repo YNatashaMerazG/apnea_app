@@ -15,7 +15,7 @@
         <h4 class="card-title">Buscar paciente por ID</h4>
 
         <form method="GET" class="d-flex mb-3" role="search">
-            <input class="form-control me-2" type="search" placeholder="Buscar por ID..." name="buscar" value="{{ request.GET.buscar }}">
+            <input class="form-control me-2" type="search" placeholder="Buscar por ID, nombre(s) o apellidos" name="buscar" value="{{ request.GET.buscar }}">
             <button class="btn btn-outline-primary" type="submit">Buscar</button>
             <a href="{% url 'pacientes' %}" class="btn btn-outline-secondary">Borrar</a>
         </form>
