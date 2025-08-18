@@ -5,6 +5,15 @@
       Cuestionario STOP-BANG
     </div>
     <div class="card-body p-4">
+
+    {#
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success text-center mb-3">
+          {{ message }}
+        </div>
+      {% endfor %}
+      #}
   
     <!-- Botón para generar PDF -->
     {% if paciente %}
