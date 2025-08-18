@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class PacienteForm(forms.ModelForm):
     class Meta:
         model = Paciente
-        fields = '__all__'
+        fields = "__all__"
         widgets = {
             'sexo': forms.Select(choices=Paciente.SEXO_OPCIONES, attrs={'class': 'form-control'}),
             'ronca': forms.RadioSelect(choices=[(True, 'Sí'), (False, 'No')]),
@@ -15,6 +15,15 @@ class PacienteForm(forms.ModelForm):
             'observado': forms.RadioSelect(choices=[(True, 'Sí'), (False, 'No')]),
             'presion_alta': forms.RadioSelect(choices=[(True, 'Sí'), (False, 'No')]),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # 🔹 Hacemos obligatorios los radios
+        self.fields['ronca'].required = True
+        self.fields['cansado'].required = True
+        self.fields['observado'].required = True
+        self.fields['presion_alta'].required = True
+
 
 #REGISTRO DE LOS DOCTORES
 class DoctorRegisterForm(forms.ModelForm):
