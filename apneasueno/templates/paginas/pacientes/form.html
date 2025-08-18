@@ -117,4 +117,21 @@
   });
 </script>
 
+// Validación del formulario
+<script>
+  // Validar antes de enviar
+  document.querySelector("form").addEventListener("submit", function(e) {
+    const imc = document.getElementById("imc_display").innerText.trim();
+    const score = document.getElementById("stopbang_score").innerText.trim();
+    const riesgo = document.getElementById("stopbang_risk").innerText.trim();
+
+    // Revisamos si alguno está vacío o en "--"
+    if (imc === "--" || score === "--" || riesgo === "--") {
+      e.preventDefault(); // Bloquear envío
+      alert("⚠️ Debes calcular IMC, puntuación y riesgo antes de enviar.");
+    }
+  });
+</script>
+
+
 
