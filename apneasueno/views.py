@@ -147,7 +147,11 @@ def pacientes(request):
     pacientes = None  # Por defecto, no mostrar nada
 
     if query:
-        pacientes = Paciente.objects.filter(Q(id__icontains=query))  # solo por ID
+        pacientes = Paciente.objects.filter(
+            Q(id__icontains=query) |
+            Q(nombres__icontains=query) |
+            Q(apellidos__icontains=query)
+        )
 
     es_doctor = False
     if request.user.is_authenticated:
