@@ -1,0 +1,34 @@
+{% extends "paginas/base.html" %}
+
+{% block titulo %}Registro Exitoso{% endblock %}
+
+{% block contenido %}
+<div class="container mt-5">
+  <div class="card shadow rounded-4">
+    <div class="card-header bg-success text-white text-center fs-4">
+      ✅ Registro Completado
+    </div>
+    <div class="card-body p-4 text-center">
+      <p class="fs-5">El paciente <strong>{{ paciente.nombre }}</strong> ha sido registrado correctamente.</p>
+      <p><strong>Número de expediente:</strong> {{ paciente.id }}</p>
+
+      <!-- Botón para ir al detalle del paciente o generar PDF -->
+      <div class="mt-4 d-flex justify-content-center gap-3">
+        <a href="{% url 'inicio' %}" class="btn btn-primary px-4">
+          🏠 Ir al inicio
+        </a>
+        {% if paciente %}
+        <a href="{% url 'generar_pdf' paciente.id %}" class="btn btn-info px-4">
+          📄 Generar PDF
+        </a>
+        {% endif %}
+      </div>
+
+      <!-- Mensaje adicional -->
+      <div class="alert alert-success mt-4" role="alert">
+        Puedes revisar o actualizar los datos del paciente en cualquier momento.
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
