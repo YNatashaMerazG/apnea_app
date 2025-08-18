@@ -55,8 +55,6 @@ def paciente_login(request):
         form = PacienteForm(request.POST)
         if form.is_valid():
             paciente = form.save()  # Guardar y obtener el objeto paciente
-            messages.success(request, "✅ Cuestionario realizado con éxito")
-            #return redirect('pacientes')
             return redirect('paciente_exito', paciente_id=paciente.id)  # Redirigir a página de éxito
     else:
         form = PacienteForm()
