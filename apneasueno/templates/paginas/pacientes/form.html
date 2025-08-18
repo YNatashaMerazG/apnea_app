@@ -117,22 +117,35 @@
   });
 </script>
 
-
 <script>
-  // Validación del formulario
   // Validar antes de enviar
   document.querySelector("form").addEventListener("submit", function(e) {
     const imc = document.getElementById("imc_display").innerText.trim();
     const score = document.getElementById("stopbang_score").innerText.trim();
     const riesgo = document.getElementById("stopbang_risk").innerText.trim();
 
-    // Revisamos si alguno está vacío o en "--"
     if (imc === "--" || score === "--" || riesgo === "--") {
       e.preventDefault(); // Bloquear envío
       alert("⚠️ Debes calcular IMC, puntuación y riesgo antes de enviar.");
+
+      // 🔹 Limpiar campos de entrada
+      document.getElementById("id_peso")?.value = "";
+      document.getElementById("id_estatura")?.value = "";
+      document.getElementById("id_cuello")?.value = "";
+
+      // 🔹 Resetear visualización
+      document.getElementById("imc_display").innerText = "--";
+      document.getElementById("stopbang_score").innerText = "--";
+      document.getElementById("stopbang_risk").innerText = "--";
+
+      // 🔹 También limpiar checkboxes/radios
+      ["id_ronca", "id_cansado", "id_observado", "id_presion_alta"].forEach(id => {
+        document.getElementById(id)?.checked = false;
+      });
     }
   });
 </script>
+
 
 
 
