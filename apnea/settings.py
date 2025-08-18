@@ -13,12 +13,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 
-print("=== Cargando settings.py ===")
-print("Ruta absoluta:", os.path.abspath(__file__))
-print("DB Host:", 'NatashaMeraz.mysql.pythonanywhere-services.com')  # o el valor que tengas
-
-
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -83,14 +77,12 @@ WSGI_APPLICATION = 'apnea.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'NatashaMeraz$pacientes',   # nombre exacto
+        'NAME': 'NatashaMeraz$pacientes',  # Nombre exacto de la base
         'USER': 'NatashaMeraz',
-        'PASSWORD': 'yoscar123',  # tu contraseña
+        'PASSWORD': 'yoscar123',
         'HOST': 'NatashaMeraz.mysql.pythonanywhere-services.com',
-        'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -109,7 +101,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+ 
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
