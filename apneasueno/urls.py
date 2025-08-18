@@ -9,8 +9,6 @@ from .views import graficas_view
 
 
 urlpatterns = [
-    print(">>> Cargando apnea/urls.py correcto <<<")
-
     path('admin/', admin.site.urls),
     path('', views.inicio, name='inicio'),
     path('nosotros', views.nosotros, name='nosotros'),
