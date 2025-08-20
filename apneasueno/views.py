@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
@@ -23,6 +24,7 @@ from .models import PerfilDoctor
 from .forms import RestablecerContrasenaForm
 from weasyprint import HTML
 from datetime import datetime
+import base64
 
 
 # Create your views here.
@@ -99,11 +101,14 @@ def generar_pdf(request, paciente_id):
     # 3. Obtener la URL completa del logo (esto es lo que necesitabas)
     url_logo = request.build_absolute_uri(static('img/hospital.png'))
 
+    with open(os.path.join(settings.STATIC_ROOT, "img/hospital.png"), "rb") as f:
+        logo_base64 = base64.b64encode(f.read()).decode()
+
     html_string = render_to_string('paginas/pacientes/pase_pdf.html', {
         'paciente': paciente,
         'year': datetime.now().year,
         'fecha_actual': fecha_actual,
-        'url_logo': url_logo,
+        'logo_base64': logo_base64,
     })
 
     html = HTML(string=html_string, base_url=request.build_absolute_uri())
@@ -113,6 +118,8 @@ def generar_pdf(request, paciente_id):
     response['Content-Disposition'] = f'attachment; filename="pase_paciente_{paciente.id}.pdf"'
 
     return response
+
+
 
 
 #INICIO DE SESION DOCTORES 
