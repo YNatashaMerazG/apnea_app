@@ -98,8 +98,6 @@ def generar_pdf(request, paciente_id):
 
     # 2. Obtener fecha actual
     fecha_actual = timezone.now().strftime('%d/%m/%Y')
-    # 3. Obtener la URL completa del logo (esto es lo que necesitabas)
-    url_logo = request.build_absolute_uri(static('img/hospital.png'))
 
     with open(os.path.join(settings.STATIC_ROOT, "img/hospital.png"), "rb") as f:
         logo_base64 = base64.b64encode(f.read()).decode()
