@@ -14,7 +14,6 @@ urlpatterns = [
     path('nosotros', views.nosotros, name='nosotros'),
     path('pacientes', views.pacientes, name='pacientes'), #lista
     path('pacientes/crear', views.crear, name='crear'), # creacion
-    path('pacientes/editar', views.editar, name='editar'), 
     path('eliminar/<str:id>', views.eliminar, name='eliminar'),
     path('pacientes/editar/<str:id>', views.editar, name='editar'), # se coloco str para numeros y letras en ID | Boton editar (doctor)
     path('paciente_login', views.paciente_login, name='paciente_login'),

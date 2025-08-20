@@ -30,11 +30,9 @@ import os
 
 # Create your views here.
 
-def inicio(request): #Funcion que se le envia una solicitud (vista se llama inicio)
+#Funcion que se le envia una solicitud (vista se llama inicio)
+def inicio(request): 
    return render(request, 'paginas/inicio.html')
-
-def nosotros(request):
-    return render(request, 'paginas/nosotros.html')
 
 def editar(request, id):
     pacientes = Paciente.objects.get(id=id)
