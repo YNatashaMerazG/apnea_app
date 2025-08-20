@@ -28,9 +28,6 @@ from datetime import datetime
 import base64
 import os
 
-
-
-
 # Create your views here.
 
 def inicio(request): #Funcion que se le envia una solicitud (vista se llama inicio)
@@ -120,9 +117,6 @@ def generar_pdf(request, paciente_id):
     response['Content-Disposition'] = f'attachment; filename="pase_paciente_{paciente.id}.pdf"'
 
     return response
-
-
-
 
 #INICIO DE SESION DOCTORES 
 def doctor_login_view(request):
