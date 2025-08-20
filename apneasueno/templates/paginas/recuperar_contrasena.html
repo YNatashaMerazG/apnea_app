@@ -4,14 +4,14 @@
 
 {% block contenido %}
 <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-  <div class="card p-4 shadow" style="background-color: #e7f1ff; width: 100%; max-width: 400px;">
+  <div class="card shadow-lg p-4 rounded-4" style="width: 100%; max-width: 420px;">
     <h2 class="text-center mb-3">Restablecer contraseña</h2>
 
     <form method="post" class="form-login">
       {% csrf_token %}
 
       <!-- Campo Usuario -->
-      <div class="form-group mb-3">
+     <div class="d-grid gap-2 mt-3">
         {{ form.username.label_tag }}
         {{ form.username }}
         {% if form.username.errors %}
@@ -35,7 +35,7 @@
 
 
       <!-- Campo Nueva Contraseña -->
-      <div class="form-group mb-4">
+      <div class="d-grid gap-2 mt-3">
         {{ form.nueva_contrasena.label_tag }}
         {{ form.nueva_contrasena }}
         {% if form.nueva_contrasena.errors %}
