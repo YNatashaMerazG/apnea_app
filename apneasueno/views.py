@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 from django.contrib import messages
+from django.conf import settings
 from django.utils import timezone
 from django.shortcuts import redirect
 from weasyprint import HTML
@@ -25,6 +26,9 @@ from .forms import RestablecerContrasenaForm
 from weasyprint import HTML
 from datetime import datetime
 import base64
+import os
+
+
 
 
 # Create your views here.
