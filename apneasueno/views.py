@@ -114,6 +114,7 @@ def generar_pdf(request, paciente_id):
 
     return response
 
+
 #INICIO DE SESION DOCTORES 
 def doctor_login_view(request):
     if request.user.is_authenticated:
