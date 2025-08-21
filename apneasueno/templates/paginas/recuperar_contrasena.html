@@ -11,6 +11,7 @@
 
     <form method="post" class="form-login">
       {% csrf_token %}
+      {{ form.as_p }}
 
       <!-- Campo Usuario -->
      <div class="d-grid gap-2 mt-3">
@@ -27,7 +28,7 @@
         {{ form.nip }}
   
         {% if form.nip.help_text %}
-            <small class="form-text text-muted d-block mt-1">{{ form.nip.help_text }}</small>
+            <small class="text-danger small">{{ form.nip.help_text }}</small>
         {% endif %}
   
         {% if form.nip.errors %}
