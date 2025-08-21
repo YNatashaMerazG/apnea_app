@@ -1,5 +1,5 @@
 from django import forms
-from .models import Doctor, Paciente
+from .models import Paciente
 from .models import PerfilDoctor
 from django.contrib.auth.models import User
 from django import forms
