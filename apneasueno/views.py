@@ -154,7 +154,7 @@ def pacientes(request):
     es_doctor = False
     if request.user.is_authenticated:
         es_doctor = request.user.groups.filter(name='Doctores').exists()
-
+ 
     if query:
         if es_doctor:
             # ✅ Los doctores pueden buscar con coincidencias parciales
