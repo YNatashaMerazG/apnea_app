@@ -21,7 +21,7 @@
         <label class="fw-semibold">{{ form.username.label }}</label>
         <div class="input-group">
           <span class="input-group-text bg-light"><i class="bi bi-person-fill"></i></span>
-          {{ form.username|add_class:"form-control" }}
+          {{ form.username }}
         </div>
         {% if form.username.errors %}
           <div class="text-danger small">{{ form.username.errors }}</div>
@@ -33,7 +33,7 @@
         <label class="fw-semibold">{{ form.nip.label }}</label>
         <div class="input-group">
           <span class="input-group-text bg-light"><i class="bi bi-key-fill"></i></span>
-          {{ form.nip|add_class:"form-control" }}
+          {{ form.nip }}
         </div>
         {% if form.nip.help_text %}
           <small class="text-danger small">{{ form.nip.help_text }}</small>
@@ -48,7 +48,7 @@
         <label class="fw-semibold">{{ form.nueva_contrasena.label }}</label>
         <div class="input-group">
           <span class="input-group-text bg-light"><i class="bi bi-lock-fill"></i></span>
-          {{ form.nueva_contrasena|add_class:"form-control" }}
+          {{ form.nueva_contrasena }}
         </div>
         {% if form.nueva_contrasena.errors %}
           <div class="text-danger small">{{ form.nueva_contrasena.errors }}</div>

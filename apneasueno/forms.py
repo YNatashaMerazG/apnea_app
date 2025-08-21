@@ -2,6 +2,8 @@ from django import forms
 from .models import Paciente
 from .models import PerfilDoctor
 from django.contrib.auth.models import User
+from django import forms
+from django.core.exceptions import ValidationError
 
 
 class PacienteForm(forms.ModelForm):
@@ -66,18 +68,34 @@ class DoctorLoginForm(forms.Form):
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
 #RECUPERAR CONTRASEÑA DOCTORES
+
+
 class RestablecerContrasenaForm(forms.Form):
-    username = forms.CharField(label='Usuario')
+    username = forms.CharField(
+        label='Usuario',
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingresa tu usuario'
+        })
+    )
+
     nip = forms.CharField(
         label='NIP',
-        widget=forms.PasswordInput,
         max_length=5,
         min_length=5,
-        help_text="Debe contener exactamente 5 caracteres."
+        help_text="Debe contener exactamente 5 caracteres.",
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingresa tu NIP'
+        })
     )
+
     nueva_contrasena = forms.CharField(
         label='Nueva contraseña',
-        widget=forms.PasswordInput
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Escribe tu nueva contraseña'
+        })
     )
 
     def clean_nip(self):
@@ -85,6 +103,7 @@ class RestablecerContrasenaForm(forms.Form):
         if len(nip) != 5:
             raise ValidationError("El NIP debe tener exactamente 5 caracteres.")
         return nip
+
 
     def clean(self):
         cleaned_data = super().clean()
