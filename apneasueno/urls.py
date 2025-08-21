@@ -17,9 +17,9 @@ urlpatterns = [
     path('doctor_register', views.doctor_register, name='doctor_register'), #registrar un nuevo doctor
     path('paciente/<str:paciente_id>/pdf/', views.generar_pdf, name='generar_pdf'), #generacion de pdf (pase)
     path('doctor_login/', views.doctor_login_view, name='doctor_login'), #inicio de sesion doctores
-    path('recuperar_contrasena', views.restablecer_contrasena, name='recuperar_contrasena'), # recuperar contraseña (doctor)
+    path("recuperar_contrasena", views.restablecer_contrasena, name="recuperar_contrasena"),
     path('logout/', views.salir, name='logout'), # Salir de la sesion (doctor)
     path('pacientes/todos/', pacientes_doctor, name='pacientes_doctor'), #Lista de pacientes (doctor)
     path('graficas/', graficas_view, name='graficas'), #graficas de los pacientes
     path('paciente/exito/<str:paciente_id>/', views.paciente_exito, name='paciente_exito'), #envio de formulario exitoso
-]
+]   
