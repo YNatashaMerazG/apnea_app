@@ -183,26 +183,47 @@ def pacientes(request):
 # RECUPERAR CONTRASEÑA DOCTOREs
 
 # 🔹 Verificación: solo doctores pueden acceder
-def es_doctor_check(user):
-    return user.is_authenticated and user.groups.filter(name='Doctores').exists()
-
-
-@user_passes_test(es_doctor_check)
 def restablecer_contrasena(request):
-    if request.method == "POST":
-        form = PasswordResetForm(request.POST)
+    if request.method == 'POST':
+        form = RestablecerContrasenaForm(request.POST)
         if form.is_valid():
-            form.save(
-                request=request,
-                use_https=request.is_secure(),
-                email_template_name="emails/reset_password.html",
-            )
-            return redirect("login")  # después de enviar, redirige al login
+            username = form.cleaned_data['username']
+            nueva_contrasena = form.cleaned_data['nueva_contrasena']
+            user = User.objects.get(username=username)
+            user.set_password(nueva_contrasena)
+            user.save()
+            messages.success(request, 'Contraseña actualizada correctamente.')
+            return redirect('doctor_login')
+        else:
+            messages.error(request, 'Corrige los errores del formulario.')
     else:
-        form = PasswordResetForm()
+        form = RestablecerContrasenaForm()
 
-    return render(request, "paginas/doctores/restablecer_contrasena.html", {"form": form})
+    return render(request, 'paginas/recuperar_contrasena.html', {'form': form})
 
+# NUEVA VISTA LISTA DE DOCTORES
+def es_doctor_check(user):
+    return user.groups.filter(name='Doctores').exists()
+
+@login_required
+@user_passes_test(es_doctor_check)
+def pacientes_doctor(request):
+    buscar = request.GET.get('buscar')
+    
+    if buscar:
+        pacientes = Paciente.objects.filter(
+            Q(nombres__icontains=buscar) |
+            Q(apellidos__icontains=buscar) |
+            Q(id__icontains=buscar)
+        )
+    else:
+        pacientes = Paciente.objects.all()
+
+    context = {
+        'pacientes': pacientes,
+        'es_doctor': True,
+    }
+    return render(request, 'paginas/pacientes/todos_los_pacientes.html', context)
 
     #GRAFICAS
 @login_required
