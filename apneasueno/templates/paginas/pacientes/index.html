@@ -1,3 +1,5 @@
+<!-- LISTA PARA PACIENTES -->
+
 {% extends "paginas/base.html" %}
 
 {% block titulo %} Cuestionario {% endblock %}
@@ -12,10 +14,10 @@
     </div>
 
     <div class="card-body">
-        <h4 class="card-title">Buscar pacientes</h4>
+        <h4 class="card-title">Busca tus resultados</h4>
 
         <form method="GET" class="d-flex mb-3" role="search">
-            <input class="form-control me-2" type="search" placeholder="Buscar por ID, nombre(s) o apellidos" name="buscar" value="{{ request.GET.buscar }}">
+            <input class="form-control me-2" type="search" placeholder="Buscar por ID" name="buscar" value="{{ request.GET.buscar }}">
             <button class="btn btn-outline-primary" type="submit">Buscar</button>
             <a href="{% url 'pacientes' %}" class="btn btn-outline-secondary">Borrar</a>
         </form>
@@ -66,7 +68,7 @@
             </table>
         </div>
         {% elif request.GET.buscar %}
-            <div class="alert alert-warning">No se encontró ningún paciente con ese ID, nombre(s) o apellidos.</div>
+            <div class="alert alert-warning">No se encontró ningún paciente con ese ID.</div>
         {% endif %}
     </div>
 </div>
