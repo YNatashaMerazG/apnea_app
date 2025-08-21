@@ -5,7 +5,9 @@
 {% block contenido %}
 <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
   <div class="card shadow-lg p-4 rounded-4" style="width: 100%; max-width: 420px;">
-    <h2 class="text-center mb-3">Restablecer contraseña</h2>
+    <div class="text-center mb-4">
+      <h2 class="fw-bold text-primary">Restablecer contraseña</h2>
+    </div>
 
     <form method="post" class="form-login">
       {% csrf_token %}
