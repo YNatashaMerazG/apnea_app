@@ -11,7 +11,6 @@ from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q
-from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 from django.contrib import messages
@@ -178,30 +177,28 @@ def pacientes(request):
 
 # RECUPERAR CONTRASEÑA DOCTOREs
 
-@login_required
+# 🔹 Definir la función ANTES de usarla en el decorador
+def es_doctor_check(user):
+    return user.is_authenticated and user.groups.filter(name='Doctores').exists()
+
+
 @user_passes_test(es_doctor_check)
 def pacientes_doctor(request):
-    # Verificar si el usuario es doctor
-    es_doctor = request.user.groups.filter(name='Doctores').exists()
-
+    query = request.GET.get('buscar')
     pacientes = None
-    if es_doctor:  
-        buscar = request.GET.get('buscar')
-        if buscar:
-            pacientes = Paciente.objects.filter(
-                Q(nombres__icontains=buscar) |
-                Q(apellidos__icontains=buscar) |
-                Q(id__icontains=buscar)
-            )
-        else:
-            pacientes = Paciente.objects.all()
+
+    if query:
+        pacientes = Paciente.objects.filter(
+            Q(id__icontains=query) |
+            Q(nombres__icontains=query) |
+            Q(apellidos__icontains=query) 
+        )
 
     context = {
         'pacientes': pacientes,
-        'es_doctor': es_doctor,
+        'es_doctor': True,
     }
-    return render(request, 'paginas/pacientes/todos_los_pacientes.html', context)
-
+    return render(request, 'paginas/pacientes/index.html', context)
 
     #GRAFICAS
 @login_required
