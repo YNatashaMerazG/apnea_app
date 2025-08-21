@@ -3,13 +3,11 @@
 {% block titulo %} Recuperar contraseña {% endblock %}
 
 {% block contenido %}
-<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh; background: linear-gradient(135deg, #4e73df, #224abe);">
-  <div class="card shadow-lg p-4 rounded-4" style="width: 100%; max-width: 450px; border: none;">
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh; background-color: #f8f9fa;">
+  <div class="card shadow p-4 rounded-4" style="width: 100%; max-width: 420px; border: none;">
     <div class="text-center mb-4">
-      <div class="mb-3">
-        <i class="bi bi-shield-lock-fill" style="font-size: 3rem; color: #4e73df;"></i>
-      </div>
-      <h2 class="fw-bold text-dark">Restablecer contraseña</h2>
+      <i class="bi bi-shield-lock-fill" style="font-size: 3rem; color: #0d6efd;"></i>
+      <h2 class="fw-bold text-dark mt-2">Restablecer contraseña</h2>
       <p class="text-muted small">Ingresa tus datos para continuar</p>
     </div>
 
@@ -19,10 +17,7 @@
       <!-- Campo Usuario -->
       <div class="form-group mb-3">
         <label class="fw-semibold">{{ form.username.label }}</label>
-        <div class="input-group">
-          <span class="input-group-text bg-light"><i class="bi bi-person-fill"></i></span>
-          {{ form.username }}
-        </div>
+        {{ form.username }}
         {% if form.username.errors %}
           <div class="text-danger small">{{ form.username.errors }}</div>
         {% endif %}
@@ -31,12 +26,9 @@
       <!-- Campo NIP -->
       <div class="form-group mb-3">
         <label class="fw-semibold">{{ form.nip.label }}</label>
-        <div class="input-group">
-          <span class="input-group-text bg-light"><i class="bi bi-key-fill"></i></span>
-          {{ form.nip }}
-        </div>
+        {{ form.nip }}
         {% if form.nip.help_text %}
-          <small class="text-danger small">{{ form.nip.help_text }}</small>
+          <small class="text-muted d-block">{{ form.nip.help_text }}</small>
         {% endif %}
         {% if form.nip.errors %}
           <div class="text-danger small">{{ form.nip.errors }}</div>
@@ -46,10 +38,7 @@
       <!-- Campo Nueva Contraseña -->
       <div class="form-group mb-3">
         <label class="fw-semibold">{{ form.nueva_contrasena.label }}</label>
-        <div class="input-group">
-          <span class="input-group-text bg-light"><i class="bi bi-lock-fill"></i></span>
-          {{ form.nueva_contrasena }}
-        </div>
+        {{ form.nueva_contrasena }}
         {% if form.nueva_contrasena.errors %}
           <div class="text-danger small">{{ form.nueva_contrasena.errors }}</div>
         {% endif %}
@@ -57,7 +46,7 @@
 
       <!-- Botón -->
       <div class="d-grid mt-4">
-        <button type="submit" class="btn btn-primary btn-lg shadow-sm">
+        <button type="submit" class="btn btn-primary btn-lg">
           <i class="bi bi-arrow-repeat"></i> Restablecer contraseña
         </button>
       </div>
