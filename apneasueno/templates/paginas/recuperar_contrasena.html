@@ -37,7 +37,7 @@
 
 
       <!-- Campo Nueva Contraseña -->
-      <div class="d-grid gap-2 mt-3">
+      <div class="d-grid gap-2 mt-2">
         {{ form.nueva_contrasena.label_tag }}
         {{ form.nueva_contrasena }}
         {% if form.nueva_contrasena.errors %}
@@ -53,7 +53,7 @@
     </p>
 
     {% if messages %}
-      <ul class="alert alert-warning mt-3">
+      <ul class="alert alert-warning mt-2">
         {% for message in messages %}
           <li>{{ message }}</li>
         {% endfor %}
