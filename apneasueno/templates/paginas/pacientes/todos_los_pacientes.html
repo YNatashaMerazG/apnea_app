@@ -10,57 +10,66 @@
             <a class="btn btn-outline-danger px-4" href="{% url 'inicio' %}">❌ Volver</a>
     </div>
 
-
     <div class="card-body">
-        <form method="GET" class="d-flex mb-3" role="search">
-            <input class="form-control me-2" type="search" placeholder="Buscar paciente por nombre, apellido o ID..." name="buscar" value="{{ request.GET.buscar }}">
-            <button class="btn btn-outline-primary" type="submit">Buscar</button>
-            <a href="{% url 'pacientes_doctor' %}" class="btn btn-outline-secondary">Borrar</a>
-        </form>
+        {% if es_doctor %}
+            <!-- 🔍 Buscador visible solo para doctores -->
+            <form method="GET" class="d-flex mb-3" role="search">
+                <input class="form-control me-2" type="search" placeholder="Buscar paciente por nombre, apellido o ID..." name="buscar" value="{{ request.GET.buscar }}">
+                <button class="btn btn-outline-primary" type="submit">Buscar</button>
+                <a href="{% url 'pacientes_doctor' %}" class="btn btn-outline-secondary">Borrar</a>
+            </form>
 
-        {% if pacientes %}
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre completo</th>
-                        <th>Puntuación STOP-BANG</th>
-                        <th style="min-width: 200px;">Nivel de riesgo</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for Paciente in pacientes %}
-                    <tr>
-                        <td>{{ Paciente.id }}</td>
-                        <td>{{ Paciente.nombres }} {{ Paciente.apellidos }}</td>
-                        <td>{{ Paciente.puntuacion_stopbang }}</td>
-                        <td
-                            style="min-width: 200px;"
-                            {% if Paciente.riesgo == 'Alto riesgo de AOS' %}
-                                class="bg-danger text-white"
-                            {% elif Paciente.riesgo == 'Riesgo intermedio de AOS' %}
-                                class="bg-warning text-dark"
-                            {% elif Paciente.riesgo == 'Bajo riesgo de AOS' %}
-                                class="bg-success text-white"
-                            {% endif %}
-                        >
-                            {{ Paciente.riesgo }}
-                        </td>
-                        <td>
-                            <a href="{% url 'generar_pdf' Paciente.id %}" class="btn btn-info btn-sm me-1" target="_blank">PDF</a>
-                            <a class="btn btn-secondary btn-sm me-1" href="{% url 'editar' Paciente.id %}">Editar</a>
-                            <a class="btn btn-danger btn-sm me-1" href="{% url 'eliminar' Paciente.id %}">Eliminar</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+            {% if pacientes %}
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre completo</th>
+                            <th>Puntuación STOP-BANG</th>
+                            <th style="min-width: 200px;">Nivel de riesgo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for Paciente in pacientes %}
+                        <tr>
+                            <td>{{ Paciente.id }}</td>
+                            <td>{{ Paciente.nombres }} {{ Paciente.apellidos }}</td>
+                            <td>{{ Paciente.puntuacion_stopbang }}</td>
+                            <td
+                                style="min-width: 200px;"
+                                {% if Paciente.riesgo == 'Alto riesgo de AOS' %}
+                                    class="bg-danger text-white"
+                                {% elif Paciente.riesgo == 'Riesgo intermedio de AOS' %}
+                                    class="bg-warning text-dark"
+                                {% elif Paciente.riesgo == 'Bajo riesgo de AOS' %}
+                                    class="bg-success text-white"
+                                {% endif %}
+                            >
+                                {{ Paciente.riesgo }}
+                            </td>
+                            <td>
+                                <a href="{% url 'generar_pdf' Paciente.id %}" class="btn btn-info btn-sm me-1" target="_blank">PDF</a>
+                                <a class="btn btn-secondary btn-sm me-1" href="{% url 'editar' Paciente.id %}">Editar</a>
+                                <a class="btn btn-danger btn-sm me-1" href="{% url 'eliminar' Paciente.id %}">Eliminar</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+                <div class="alert alert-warning">No se encontraron pacientes.</div>
+            {% endif %}
+
         {% else %}
-        <div class="alert alert-warning">No se encontraron pacientes.</div>
+            <!-- 🚫 Mensaje para pacientes -->
+            <div class="alert alert-danger text-center">
+                🚫 No tienes permisos para ver la lista completa de pacientes.
+            </div>
         {% endif %}
     </div>
 </div>
 {% endblock %}
+
