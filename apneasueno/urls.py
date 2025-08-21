@@ -1,6 +1,8 @@
 from django.urls import path
 from django.urls import path, include
 from . import views
+from django.contrib.auth.views import LogoutView #salir de la sesion
+from django.contrib import admin   # 👈 aquí debería cargarse
 
 urlpatterns = [
     path('admin/', admin.site.urls), # Acceso a la administracion
