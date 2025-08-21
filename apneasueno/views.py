@@ -157,14 +157,14 @@ def pacientes(request):
 
     if query:
         if es_doctor:
-            # Doctores pueden buscar por ID, nombre o apellido (con coincidencias parciales)
+            # ✅ Los doctores pueden buscar con coincidencias parciales
             pacientes = Paciente.objects.filter(
                 Q(id__icontains=query) |
                 Q(nombres__icontains=query) |
                 Q(apellidos__icontains=query)
             )
         else:
-            # Pacientes solo pueden ver resultados si el ID es EXACTO
+            # ✅ Los pacientes solo verán su info si el ID coincide exactamente
             pacientes = Paciente.objects.filter(id=query)
 
     context = {

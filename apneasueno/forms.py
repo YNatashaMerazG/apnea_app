@@ -69,7 +69,6 @@ class DoctorLoginForm(forms.Form):
 
 #RECUPERAR CONTRASEÑA DOCTORES
 
-
 class RestablecerContrasenaForm(forms.Form):
     username = forms.CharField(
         label='Usuario',
