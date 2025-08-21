@@ -28,6 +28,12 @@ from weasyprint import HTML
 from datetime import datetime
 import base64
 import os
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.decorators import user_passes_test
+from django.core.mail import send_mail
+from django.conf import settings
+from django.shortcuts import render, redirect
+
 
 
 # Create your views here.
@@ -176,28 +182,27 @@ def pacientes(request):
 
 # RECUPERAR CONTRASEÑA DOCTOREs
 
-# 🔹 Definir la función ANTES de usarla en el decorador
+# 🔹 Verificación: solo doctores pueden acceder
 def es_doctor_check(user):
     return user.is_authenticated and user.groups.filter(name='Doctores').exists()
 
 
 @user_passes_test(es_doctor_check)
-def pacientes_doctor(request):
-    query = request.GET.get('buscar')
-    pacientes = None
+def restablecer_contrasena(request):
+    if request.method == "POST":
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            form.save(
+                request=request,
+                use_https=request.is_secure(),
+                email_template_name="emails/reset_password.html",
+            )
+            return redirect("login")  # después de enviar, redirige al login
+    else:
+        form = PasswordResetForm()
 
-    if query:
-        pacientes = Paciente.objects.filter(
-            Q(id__icontains=query) |
-            Q(nombres__icontains=query) |
-            Q(apellidos__icontains=query) 
-        )
+    return render(request, "paginas/doctores/restablecer_contrasena.html", {"form": form})
 
-    context = {
-        'pacientes': pacientes,
-        'es_doctor': True,
-    }
-    return render(request, 'paginas/pacientes/index.html', context)
 
     #GRAFICAS
 @login_required
