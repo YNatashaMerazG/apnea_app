@@ -148,22 +148,29 @@ def pacientes(request):
     query = request.GET.get('buscar')
     pacientes = None  # Por defecto, no mostrar nada
 
-    if query:
-        pacientes = Paciente.objects.filter(
-            Q(id__icontains=query) |
-            Q(nombres__icontains=query) |
-            Q(apellidos__icontains=query) 
-        )
-
+    # Verificar si es doctor
     es_doctor = False
     if request.user.is_authenticated:
         es_doctor = request.user.groups.filter(name='Doctores').exists()
+
+    if query:
+        if es_doctor:
+            # Doctores pueden buscar por ID, nombre o apellido (con coincidencias parciales)
+            pacientes = Paciente.objects.filter(
+                Q(id__icontains=query) |
+                Q(nombres__icontains=query) |
+                Q(apellidos__icontains=query)
+            )
+        else:
+            # Pacientes solo pueden ver resultados si el ID es EXACTO
+            pacientes = Paciente.objects.filter(id=query)
 
     context = {
         'pacientes': pacientes,
         'es_doctor': es_doctor,
     }
     return render(request, 'paginas/pacientes/index.html', context)
+
 
 
 # RECUPERAR CONTRASEÑA DOCTORES
