@@ -47,13 +47,13 @@ def editar(request, id):
     formulario = PacienteForm(request.POST or None, request.FILES or None, instance=pacientes)
     if formulario.is_valid() and request.POST:
         formulario.save()
-        return redirect('doctor_login')
+        return redirect('pacientes_doctor')
     return render(request, 'paginas/pacientes/editar.html', {'formulario':formulario})
 
 def eliminar(request, id):
     paciente = Paciente.objects.get(id=id)
     paciente.delete()
-    return redirect('doctor_login')
+    return redirect('pacientes_doctor')
 
 def doctor_login(request):
     return render(request, 'paginas/doctor_login.html')
