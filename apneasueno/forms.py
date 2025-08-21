@@ -8,9 +8,9 @@ from django.core.exceptions import ValidationError
 
 class PacienteForm(forms.ModelForm):
     doctor = forms.ModelChoiceField(
-        queryset=Doctor.objects.all(),
-        empty_label="Seleccione un doctor",
-        label="Doctor que atiende"
+        queryset=User.objects.filter(groups__name="Doctores"),  
+        required=False,
+        label="Doctor asignado"
     )
 
     class Meta:
