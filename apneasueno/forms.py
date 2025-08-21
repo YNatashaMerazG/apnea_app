@@ -104,20 +104,3 @@ class RestablecerContrasenaForm(forms.Form):
             raise ValidationError("El NIP debe tener exactamente 5 caracteres.")
         return nip
 
-
-    def clean(self):
-        cleaned_data = super().clean()
-        username = cleaned_data.get("username")
-        nip = cleaned_data.get("nip")
-
-        try:
-            user = User.objects.get(username=username)
-        except User.DoesNotExist:
-            raise forms.ValidationError("Usuario no encontrado")
-
-        try:
-            PerfilDoctor.objects.get(user=user, nip=nip)
-        except PerfilDoctor.DoesNotExist:
-            raise forms.ValidationError("El NIP no coincide con el usuario")
-
-        return cleaned_data

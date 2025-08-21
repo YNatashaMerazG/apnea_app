@@ -174,7 +174,6 @@ def pacientes(request):
     return render(request, 'paginas/pacientes/index.html', context)
 
 
-
 # RECUPERAR CONTRASEÑA DOCTOREs
 
 # 🔹 Definir la función ANTES de usarla en el decorador
