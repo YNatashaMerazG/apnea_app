@@ -179,6 +179,7 @@ def pacientes(request):
 # RECUPERAR CONTRASEÑA DOCTOREs
 
 @login_required
+@user_passes_test(es_doctor_check)
 def pacientes_doctor(request):
     # Verificar si el usuario es doctor
     es_doctor = request.user.groups.filter(name='Doctores').exists()
