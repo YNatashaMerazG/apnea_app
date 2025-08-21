@@ -1,8 +1,9 @@
-from django.urls import path
+from django.contrib import admin
 from django.urls import path, include
 from . import views
-from django.contrib.auth.views import LogoutView #salir de la sesion
-from django.contrib import admin   # 👈 aquí debería cargarse
+from django.contrib.auth.views import LogoutView
+from .views import pacientes_doctor, graficas_view
+
 
 urlpatterns = [
     path('admin/', admin.site.urls), # Acceso a la administracion
