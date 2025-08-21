@@ -6,8 +6,6 @@ from django.contrib import admin
 from .views import pacientes_doctor
 from .views import graficas_view  
 
-
-
 urlpatterns = [
     path('admin/', admin.site.urls), # Acceso a la administracion
     path('', views.inicio, name='inicio'), # Pagina principal 
