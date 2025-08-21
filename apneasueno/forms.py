@@ -1,5 +1,5 @@
 from django import forms
-from .models import Paciente
+from .models import Doctor, Paciente
 from .models import PerfilDoctor
 from django.contrib.auth.models import User
 from django import forms
@@ -7,6 +7,12 @@ from django.core.exceptions import ValidationError
 
 
 class PacienteForm(forms.ModelForm):
+    doctor = forms.ModelChoiceField(
+        queryset=Doctor.objects.all(),
+        empty_label="Seleccione un doctor",
+        label="Doctor que atiende"
+    )
+
     class Meta:
         model = Paciente
         fields = "__all__"
@@ -25,7 +31,6 @@ class PacienteForm(forms.ModelForm):
         self.fields['cansado'].required = True
         self.fields['observado'].required = True
         self.fields['presion_alta'].required = True
-
 
 #REGISTRO DE LOS DOCTORES
 class DoctorRegisterForm(forms.ModelForm):

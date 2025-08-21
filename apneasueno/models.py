@@ -60,6 +60,7 @@ class Paciente(models.Model):
 
         super().save(*args, **kwargs)
 
+#Perfil del Doctor
 class PerfilDoctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     nip = models.CharField(max_length=5)
