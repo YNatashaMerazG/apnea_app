@@ -3,68 +3,85 @@
 {% block titulo %} Recuperar contraseña {% endblock %}
 
 {% block contenido %}
-<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-  <div class="card shadow-lg p-4 rounded-4" style="width: 100%; max-width: 420px;">
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh; background: linear-gradient(135deg, #4e73df, #224abe);">
+  <div class="card shadow-lg p-4 rounded-4" style="width: 100%; max-width: 450px; border: none;">
     <div class="text-center mb-4">
-      <h2 class="fw-bold text-primary">Restablecer contraseña</h2>
+      <div class="mb-3">
+        <i class="bi bi-shield-lock-fill" style="font-size: 3rem; color: #4e73df;"></i>
+      </div>
+      <h2 class="fw-bold text-dark">Restablecer contraseña</h2>
+      <p class="text-muted small">Ingresa tus datos para continuar</p>
     </div>
 
     <form method="post" class="form-login">
       {% csrf_token %}
 
       <!-- Campo Usuario -->
-     <div class="d-grid gap-2 mt-3">
-        {{ form.username.label_tag }}
-        {{ form.username }}
+      <div class="form-group mb-3">
+        <label class="fw-semibold">{{ form.username.label }}</label>
+        <div class="input-group">
+          <span class="input-group-text bg-light"><i class="bi bi-person-fill"></i></span>
+          {{ form.username|add_class:"form-control" }}
+        </div>
         {% if form.username.errors %}
           <div class="text-danger small">{{ form.username.errors }}</div>
         {% endif %}
       </div>
 
       <!-- Campo NIP -->
-     <div class="d-grid gap-2 mt-3">
-        {{ form.nip.label_tag }}
-        {{ form.nip }}
-  
-        {% if form.nip.help_text %}
-            <small class="text-danger small">{{ form.nip.help_text }}</small>
-        {% endif %}
-  
-        {% if form.nip.errors %}
-            <div class="text-danger small">{{ form.nip.errors }}</div>
-        {% endif %}
+      <div class="form-group mb-3">
+        <label class="fw-semibold">{{ form.nip.label }}</label>
+        <div class="input-group">
+          <span class="input-group-text bg-light"><i class="bi bi-key-fill"></i></span>
+          {{ form.nip|add_class:"form-control" }}
         </div>
-
+        {% if form.nip.help_text %}
+          <small class="text-danger small">{{ form.nip.help_text }}</small>
+        {% endif %}
+        {% if form.nip.errors %}
+          <div class="text-danger small">{{ form.nip.errors }}</div>
+        {% endif %}
+      </div>
 
       <!-- Campo Nueva Contraseña -->
-      <div class="d-grid gap-2 mt-2">
-        {{ form.nueva_contrasena.label_tag }}
-        {{ form.nueva_contrasena }}
+      <div class="form-group mb-3">
+        <label class="fw-semibold">{{ form.nueva_contrasena.label }}</label>
+        <div class="input-group">
+          <span class="input-group-text bg-light"><i class="bi bi-lock-fill"></i></span>
+          {{ form.nueva_contrasena|add_class:"form-control" }}
+        </div>
         {% if form.nueva_contrasena.errors %}
           <div class="text-danger small">{{ form.nueva_contrasena.errors }}</div>
         {% endif %}
       </div>
 
-
-    <div class="d-grid gap-2 mt-3">
-      <button type="submit" class="btn btn-primary btn-lg">Restablecer contraseña</button>
-    </div>
+      <!-- Botón -->
+      <div class="d-grid mt-4">
+        <button type="submit" class="btn btn-primary btn-lg shadow-sm">
+          <i class="bi bi-arrow-repeat"></i> Restablecer contraseña
+        </button>
+      </div>
     </form>
 
+    <!-- Enlace volver -->
     <p class="mt-4 text-center">
-      <a href="{% url 'doctor_login' %}">Volver al login</a>
+      <a href="{% url 'doctor_login' %}" class="text-decoration-none">
+        <i class="bi bi-arrow-left-circle"></i> Volver al login
+      </a>
     </p>
 
+    <!-- Mensajes -->
     {% if messages %}
-      <ul class="alert alert-warning mt-2">
+      <div class="alert alert-warning mt-3">
         {% for message in messages %}
-          <li>{{ message }}</li>
+          <div>{{ message }}</div>
         {% endfor %}
-      </ul>
+      </div>
     {% endif %}
   </div>
 </div>
 {% endblock %}
+
 
 
 
