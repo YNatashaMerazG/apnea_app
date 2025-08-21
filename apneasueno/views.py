@@ -33,6 +33,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.core.mail import send_mail
 from django.conf import settings
 from django.shortcuts import render, redirect
+from django.db import models
 
 
 
@@ -154,23 +155,22 @@ def doctor_login_view(request):
 # Lista que solo mostrara el ID cuando se ingrese uno
 def pacientes(request):
     query = request.GET.get('buscar')
-    pacientes = None  # Por defecto, no mostrar nada
+    pacientes = None
 
-    # Verificar si es doctor
-    es_doctor = False
-    if request.user.is_authenticated:
-        es_doctor = request.user.groups.filter(name='Doctores').exists()
- 
-    if query:
-        if es_doctor:
-            # ✅ Los doctores pueden buscar con coincidencias parciales
-            pacientes = Paciente.objects.filter(
+    es_doctor = request.user.is_authenticated and request.user.groups.filter(name='Doctores').exists()
+
+    if es_doctor:
+        # Filtramos solo los pacientes asignados a este doctor
+        pacientes = Paciente.objects.filter(doctor=request.user)
+        if query:
+            pacientes = pacientes.filter(
                 Q(id__icontains=query) |
                 Q(nombres__icontains=query) |
                 Q(apellidos__icontains=query)
             )
-        else:
-            # ✅ Los pacientes solo verán su info si el ID coincide exactamente
+    else:
+        # Pacientes normales solo ven su propio ID
+        if query:
             pacientes = Paciente.objects.filter(id=query)
 
     context = {
@@ -178,6 +178,7 @@ def pacientes(request):
         'es_doctor': es_doctor,
     }
     return render(request, 'paginas/pacientes/index.html', context)
+
 
 
 # RECUPERAR CONTRASEÑA DOCTOREs

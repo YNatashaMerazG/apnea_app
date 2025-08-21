@@ -7,6 +7,7 @@ class Paciente(models.Model):
     # Datos personales
     nombres = models.CharField(max_length=50, verbose_name='Nombre(s)', null=True)
     apellidos = models.CharField(max_length=50, verbose_name='Apellidos', null=True)
+    doctor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)  # doctor asignado
     edad = models.PositiveIntegerField(verbose_name='Edad', null=True)
     estatura = models.FloatField(verbose_name='Estatura (m)', null=True)
     peso = models.FloatField(verbose_name='Peso (kg)', null=True)
