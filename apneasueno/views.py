@@ -231,6 +231,9 @@ def pacientes_doctor(request):
 @login_required
 @user_passes_test(es_doctor_check)
 def graficas_view(request):
+
+     # Filtramos solo pacientes asignados a este doctor
+    pacientes = Paciente.objects.filter(doctor=request.user)
     # Conteo por nivel de riesgo
     conteos_riesgo = Paciente.objects.values('riesgo').annotate(total=Count('riesgo'))
 
@@ -262,9 +265,6 @@ def graficas_view(request):
     }
 
     return render(request, 'paginas/pacientes/graficas.html', contexto)
-
-    from django.templatetags.static import static
-
 
 #salir de la sesion
 def salir(request):
