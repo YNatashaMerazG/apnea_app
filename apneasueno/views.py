@@ -93,7 +93,6 @@ def doctor_register(request):
             doctor = form.save()
             group = Group.objects.get(name='Doctores')
             doctor.groups.add(group)
-            messages.success(request, "✅ Doctor registrado exitosamente.")
             return render(request, "paginas/pacientes/exito_doctor.html", {"doctor": doctor})
     else:
         form = DoctorRegisterForm()
