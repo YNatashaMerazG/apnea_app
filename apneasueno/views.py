@@ -94,7 +94,7 @@ def doctor_register(request):
             group = Group.objects.get(name='Doctores')
             doctor.groups.add(group)
             messages.success(request, "✅ Doctor registrado exitosamente.")
-            return render(request, "paginas/doctor_success.html", {"doctor": doctor})
+            return render(request, "paginas/pacientes/exito_doctor.html", {"doctor": doctor})
     else:
         form = DoctorRegisterForm()
     return render(request, 'paginas/doctor_register.html', {'form': form})
