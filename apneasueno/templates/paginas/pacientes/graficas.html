@@ -28,7 +28,16 @@
     </div>
 
     <button id="descargarPDF" class="btn btn-success mt-3">📥 Descargar PDF</button>
+</div>
 
+<!-- Overlay de carga -->
+<div id="loadingOverlay" 
+     style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
+            background:rgba(0,0,0,0.6); z-index:9999; display:flex; 
+            align-items:center; justify-content:center; color:white; font-size:20px; 
+            flex-direction:column;">
+    <div class="spinner-border text-light" role="status"></div>
+    <p class="mt-3">Generando PDF, por favor espere...</p>
 </div>
 
 <!-- Estilos -->
@@ -80,9 +89,7 @@ canvas {
             plugins: {
                 datalabels: {
                     color: '#fff',
-                    font: {
-                        weight: 'bold'
-                    },
+                    font: { weight: 'bold' },
                     formatter: (value) => value
                 },
                 legend: {
@@ -106,22 +113,16 @@ canvas {
         },
         options: {
             scales: {
-                y: {
-                    beginAtZero: true,
-                    precision: 0
-                }
+                y: { beginAtZero: true, precision: 0 }
             },
             plugins: {
-                legend: {
-                    display: false
-                }
+                legend: { display: true, position: "top" } // ✅ mostrar leyenda en barra
             }
         }
     });
-
 </script>
 
-<!-- Descargar PDF con gráficas -->
+<!-- Descargar PDF con overlay -->
 <script>
     function getHighResImage(canvas, scale = 3) {
         const tmpCanvas = document.createElement('canvas');
@@ -143,27 +144,15 @@ canvas {
                 canvas.height = img.height;
                 const ctx = canvas.getContext("2d");
                 ctx.drawImage(img, 0, 0);
-                const dataURL = canvas.toDataURL("image/png");
-                resolve(dataURL);
+                resolve(canvas.toDataURL("image/png"));
             };
             img.src = url;
         });
     }
 
-            <!-- Overlay de carga -->
-    <div id="loadingOverlay" 
-         style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
-            background:rgba(0,0,0,0.6); z-index:9999; display:flex; 
-            align-items:center; justify-content:center; color:white; font-size:20px; 
-            flex-direction:column;">
-        <div class="spinner-border text-light" role="status"></div>
-        <p class="mt-3">Generando PDF, por favor espere...</p>
-    </div>
-
-
     document.getElementById('descargarPDF').addEventListener('click', async () => {
         const overlay = document.getElementById('loadingOverlay');
-        overlay.style.display = 'flex'; // Mostrar overlay
+        overlay.style.display = 'flex'; // mostrar overlay
 
         try {
             const { jsPDF } = window.jspdf;
@@ -183,155 +172,26 @@ canvas {
             const riesgoData = JSON.parse(document.getElementById('riesgo-data').textContent);
             const sexoData = JSON.parse(document.getElementById('sexo-data').textContent);
 
+            // === ENCABEZADO ===
+            pdf.addImage(logoBase64, "PNG", margin, 10, 20, 20);
+            pdf.setFont("times", "bold");
+            pdf.setFontSize(25);
+            pdf.text("Unidad del Sueño", midX, 18, { align: "center" });
 
-        // === ENCABEZADO ===
-        pdf.addImage(logoBase64, "PNG", margin, 10, 20, 20);
-        pdf.setFont("times", "bold");
-        pdf.setFontSize(25);
-        pdf.text("Unidad del Sueño", midX, 18, { align: "center" });
+            const fecha = new Date().toLocaleDateString();
+            pdf.setFont("times", "italic");
+            pdf.setFontSize(15);
+            pdf.text(`Fecha: ${fecha}`, pageWidth - margin, 25, { align: 'right' });
 
-        const fecha = new Date().toLocaleDateString();
-        pdf.setFont("times", "italic");
-        pdf.setFontSize(15);
-        pdf.text(`Fecha: ${fecha}`, pageWidth - margin, 25, { align: 'right' });
-
-        // === PRIMERA SECCIÓN ===
-        let y = 35;
-
-        // === LÍNEA HORIZONTAL ANTES DE LA PRIMERA GRÁFICA ===
-        pdf.setDrawColor(150);
-        pdf.setLineWidth(0.3);
-        pdf.line(margin, y, pageWidth - margin, y);
-        y += 15;
-
-        pdf.setFont("times", "bold");  // titulo
-        pdf.setFontSize(18);
-        pdf.text("Gráfica de Riesgo", midX + 25, y); //30 mm a la derecha
-        y += 8;
-
-        // Descripción a la izquierda
-        const textoRiesgo = [
-            "Esta gráfica muestra los niveles de riesgo de", 
-            "AOS (Apnea Obstructiva del Sueño)" ,
-            "detectados en los pacientes.", 
-            "Se clasifican en:",
-            ` Alto riesgo: ${riesgoData["Alto riesgo de AOS"]}`,
-            ` Riesgo intermedio: ${riesgoData["Riesgo intermedio de AOS"]}`,
-            ` Bajo riesgo: ${riesgoData["Bajo riesgo de AOS"]}`
-        ];
-        pdf.setFont("times", "normal");  //texto
-        pdf.setFontSize(15);
-
-        let textY = y + 15; // variable para bajar el texto 
-
-        textoRiesgo.forEach(line => {
-            if (line.includes("Alto riesgo:")) {
-                const partes = line.split(":");
-                pdf.setFont("times", "bold");
-                pdf.text(`• ${partes[0]}`, margin, textY);
-                pdf.setFont("times", "normal");
-                pdf.text(`: ${riesgoData["Alto riesgo de AOS"]}`, margin + 30, textY);
-            } else if (line.includes("Riesgo intermedio:")) {
-                const partes = line.split(":");
-                pdf.setFont("times", "bold");
-                pdf.text(`• ${partes[0]}`, margin, textY);
-                pdf.setFont("times", "normal");
-                pdf.text(`: ${riesgoData["Riesgo intermedio de AOS"]}`, margin + 48, textY);
-            } else if (line.includes("Bajo riesgo:")) {
-                const partes = line.split(":");
-                pdf.setFont("times", "bold");
-                pdf.text(`• ${partes[0]}`, margin, textY);
-                pdf.setFont("times", "normal");
-                pdf.text(`: ${riesgoData["Bajo riesgo de AOS"]}`, margin + 31, textY);
-            } else {
-                pdf.setFont("times", "normal");
-                pdf.text(line, margin, textY);
-            }
-
-            textY += 8;
-        });
-
-
-        // Imagen a la derecha más grande
-        // x + y + ancho + alto
-        // x: horizontal borde izquierdo del pdf
-        pdf.addImage(riesgoImg, "PNG", midX - 5, y, 110, 90);
-
-        // NUEVA Y para sección siguiente
-        y = Math.max(textY, y + 95);
-        y += 10;
-
-        // === LÍNEA HORIZONTAL DIVISORIA ===
-        pdf.setDrawColor(150);
-        pdf.setLineWidth(0.3);
-        pdf.line(margin, y, pageWidth - margin, y);
-        y += 20;
-
-        // === SEGUNDA SECCIÓN ===
-        pdf.setFont("times", "bold");  // titulo
-        pdf.setFontSize(18);
-        pdf.text("Gráfica por Sexo", midX - 70, y);
-        y += 8;
-
-        // Imagen a la izquierda
-        pdf.addImage(sexoImg, "PNG", margin, y, 80, 60);
-
-        // Texto a la derecha
-        const textoSexo = [
-            "Distribución por sexo:",
-            "Cantidad de pacientes según sexo",
-            "registrado:",
-            `Masculino: ${sexoData["Masculino"]}`,
-            `Femenino: ${sexoData["Femenino"]}`
-        ];
-        pdf.setFont("times", "normal");  //texto
-        pdf.setFontSize(15);
-
-        let textSexoY = y + 15; // variable para bajar el texto 
-        
-        textoSexo.forEach(line => {
-            if (line.includes("Masculino:")) {
-                const partes = line.split(":");
-                pdf.setFont("times", "bold");
-                pdf.text(`• ${partes[0]}`, midX + 5, textSexoY);
-                pdf.setFont("times", "normal");
-                pdf.text(`: ${sexoData["Masculino"]}`, midX + 35, textSexoY);
-            } else if (line.includes("Femenino:")) {
-                const partes = line.split(":");
-                pdf.setFont("times", "bold");
-                pdf.text(`• ${partes[0]}`, midX + 5, textSexoY);
-                pdf.setFont("times", "normal");
-                pdf.text(`: ${sexoData["Femenino"]}`, midX + 35, textSexoY);
-            } else {
-                pdf.setFont("times", "normal");
-                pdf.text(line, midX + 5, textSexoY);
-            }
-            textSexoY += 8; //espacio entre texto
-        });
-
-        // === LÍNEA HORIZONTAL DESPUÉS DE LA SEGUNDA GRÁFICA ===
-        pdf.setDrawColor(150);
-        pdf.setLineWidth(0.3);
-        pdf.line(margin, textSexoY + 25, pageWidth - margin, textSexoY + 25); // primer 20 izquierda segundo 20 derecha (nos permite bajar la linea)
-
-
-
-        // PIE DE PÁGINA
-        pdf.setFontSize(15);
-        pdf.setTextColor(100); // Gris medio (puedes usar valores del 0 al 255)
-        pdf.text("Departamento de Instrumentación", midX, 287, { align: "center" });
-
-        // DESCARGAR
-        pdf.save("reporte_estadisticas.pdf");
-    } catch (error) {
-        alert("❌ Ocurrió un error al generar el PDF");
-        console.error(error);
-    } finally {
-        overlay.style.display = 'none'; // Ocultar overlay cuando termine
-    }
-});
+            // (👆 aquí mantén el resto de tu código de armado de PDF igual)
+            
+            pdf.save("reporte_estadisticas.pdf");
+        } catch (error) {
+            alert("❌ Ocurrió un error al generar el PDF");
+            console.error(error);
+        } finally {
+            overlay.style.display = 'none'; // ocultar overlay
+        }
+    });
 </script>
-
 {% endblock %}
-
-
