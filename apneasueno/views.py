@@ -208,21 +208,24 @@ def es_doctor_check(user):
 @user_passes_test(es_doctor_check)
 def pacientes_doctor(request):
     buscar = request.GET.get('buscar')
-    
+
+    # Filtramos solo pacientes asignados a este doctor
+    pacientes = Paciente.objects.filter(doctor=request.user)
+
+    # Si hay búsqueda, filtramos por nombre, apellido o ID
     if buscar:
-        pacientes = Paciente.objects.filter(
+        pacientes = pacientes.filter(
             Q(nombres__icontains=buscar) |
             Q(apellidos__icontains=buscar) |
             Q(id__icontains=buscar)
         )
-    else:
-        pacientes = Paciente.objects.all()
 
     context = {
         'pacientes': pacientes,
         'es_doctor': True,
     }
     return render(request, 'paginas/pacientes/todos_los_pacientes.html', context)
+
 
     #GRAFICAS
 @login_required
