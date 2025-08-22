@@ -21,5 +21,5 @@ urlpatterns = [
     path('pacientes/todos/', pacientes_doctor, name='pacientes_doctor'), #Lista de pacientes (doctor)
     path('graficas/', graficas_view, name='graficas'), #graficas de los pacientes
     path('paciente/exito/<str:paciente_id>/', views.paciente_exito, name='paciente_exito'), #envio de formulario exitoso
-    path('doctor/exito/<str:doctor_id>/', views.doctor_exito, name='doctor_exito'), #doctor registrado con exito
+    path('doctor/exito_doctor/<str:doctor_id>/', views.doctor_exito, name='doctor_exito'), #doctor registrado con exito
 ]   

@@ -1,4 +1,3 @@
-<!-- paginas/doctor_register.html -->
 {% extends 'paginas/base.html' %}
 
 {% block titulo %} Registro de Doctor {% endblock %}
@@ -16,25 +15,18 @@
       {{ form.as_p }}
             
       <div class="d-grid gap-2 mt-3">
-          <button type="submit" class="btn btn-primary btn-lg">Registrar</button> <!-- Boton para Registrarse -->
-          <a class="btn btn-outline-danger" href="{% url 'inicio' %}">❌ Cancelar</a> <!-- Boton para Cancelar -->
+          <button type="submit" class="btn btn-primary btn-lg">Registrar</button>
+          <a class="btn btn-outline-danger" href="{% url 'inicio' %}">❌ Cancelar</a>
       </div>
     </form>
 
     <p class="mt-4 text-center">
       <a href="{% url 'doctor_login' %}">¿Ya tienes cuenta? Inicia sesión</a>
     </p>
-
-    {% if messages %}
-      <ul class="alert alert-warning mt-3" role="alert">
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
   </div>
 </div>
 {% endblock %}
+
 
 
  

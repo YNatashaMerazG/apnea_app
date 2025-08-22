@@ -94,15 +94,10 @@ def doctor_register(request):
             group = Group.objects.get(name='Doctores')
             doctor.groups.add(group)
             messages.success(request, "✅ Doctor registrado exitosamente.")
-            return redirect('doctor_login')
+            return render(request, "paginas/doctor_success.html", {"doctor": doctor})
     else:
         form = DoctorRegisterForm()
     return render(request, 'paginas/doctor_register.html', {'form': form})
-
-def doctor_exito(request, doctor_id):
-    doctor = PerfilDoctor.objects.get(id=doctor_id)
-    return render(request, 'paginas/pacientes/exito_doctor.html', {'doctor': doctor})
-
 
 #PDF DEL PACIENTE
 def generar_pdf(request, paciente_id):
