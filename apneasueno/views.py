@@ -231,13 +231,12 @@ def pacientes_doctor(request):
 @login_required
 @user_passes_test(es_doctor_check)
 def graficas_view(request):
-
-     # Filtramos solo pacientes asignados a este doctor
+    # Filtramos solo pacientes asignados a este doctor
     pacientes = Paciente.objects.filter(doctor=request.user)
-    # Conteo por nivel de riesgo
-    conteos_riesgo = Paciente.objects.values('riesgo').annotate(total=Count('riesgo'))
 
-    # Inicializamos los datos para asegurar que todos los niveles aparezcan
+    # Conteo por nivel de riesgo (solo pacientes de este doctor)
+    conteos_riesgo = pacientes.values('riesgo').annotate(total=Count('riesgo'))
+
     riesgo_data = {
         'Alto riesgo de AOS': 0,
         'Riesgo intermedio de AOS': 0,
@@ -246,8 +245,8 @@ def graficas_view(request):
     for item in conteos_riesgo:
         riesgo_data[item['riesgo']] = item['total']
 
-    # Conteo por sexo
-    conteos_sexo = Paciente.objects.values('sexo').annotate(total=Count('sexo'))
+    # Conteo por sexo (solo pacientes de este doctor)
+    conteos_sexo = pacientes.values('sexo').annotate(total=Count('sexo'))
 
     sexo_data = {
         'Masculino': 0,
@@ -265,6 +264,7 @@ def graficas_view(request):
     }
 
     return render(request, 'paginas/pacientes/graficas.html', contexto)
+
 
 #salir de la sesion
 def salir(request):
