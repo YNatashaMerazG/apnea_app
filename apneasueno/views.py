@@ -99,6 +99,10 @@ def doctor_register(request):
         form = DoctorRegisterForm()
     return render(request, 'paginas/doctor_register.html', {'form': form})
 
+def doctor_exito(request, doctor_id):
+    doctor = PerfilDoctor.objects.get(id=doctor_id)
+    return render(request, 'paginas/pacientes/exito_doctor.html', {'doctor': doctor})
+
 
 #PDF DEL PACIENTE
 def generar_pdf(request, paciente_id):

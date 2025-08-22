@@ -1,0 +1,22 @@
+{% extends "paginas/base.html" %}
+
+{% block titulo %}Doctor registrado con exito{% endblock %}
+
+{% block contenido %}
+<div class="container mt-5">
+  <div class="card shadow rounded-4">
+    <div class="card-header bg-success text-white text-center fs-4">
+      ✅ Doctor Registrado
+    </div>
+    <div class="card-body p-4 text-center">
+      <p class="fs-5">El doctor <strong>{{ doctor.nombre }}</strong> ha sido registrado correctamente.</p>
+
+      <!-- Botón para ir al detalle del paciente o generar PDF -->
+      <div class="mt-4 d-flex justify-content-center gap-3">
+        <a href="{% url 'doctor_login' %}" class="btn btn-primary px-4">
+          Iniciar sesión
+        </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
