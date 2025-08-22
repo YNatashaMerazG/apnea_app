@@ -183,7 +183,132 @@ canvas {
             pdf.setFontSize(15);
             pdf.text(`Fecha: ${fecha}`, pageWidth - margin, 25, { align: 'right' });
 
-            // (👆 aquí mantén el resto de tu código de armado de PDF igual)
+                
+            // === PRIMERA SECCIÓN ===
+                let y = 35;
+
+            // === LÍNEA HORIZONTAL ANTES DE LA PRIMERA GRÁFICA ===
+            pdf.setDrawColor(150);
+            pdf.setLineWidth(0.3);
+            pdf.line(margin, y, pageWidth - margin, y);
+            y += 15;
+
+            pdf.setFont("times", "bold");  // titulo
+            pdf.setFontSize(18);
+            pdf.text("Gráfica de Riesgo", midX + 25, y); //30 mm a la derecha
+            y += 8;
+
+            // Descripción a la izquierda
+            const textoRiesgo = [
+                "Esta gráfica muestra los niveles de riesgo de",
+                "AOS (Apnea Obstructiva del Sueño)",
+                "detectados en los pacientes.",
+                "Se clasifican en:",
+                ` Alto riesgo: ${riesgoData["Alto riesgo de AOS"]}`,
+                ` Riesgo intermedio: ${riesgoData["Riesgo intermedio de AOS"]}`,
+                ` Bajo riesgo: ${riesgoData["Bajo riesgo de AOS"]}`
+            ];
+            pdf.setFont("times", "normal");  //texto
+            pdf.setFontSize(15);
+
+            let textY = y + 15; // variable para bajar el texto 
+
+            textoRiesgo.forEach(line => {
+                if (line.includes("Alto riesgo:")) {
+                    const partes = line.split(":");
+                    pdf.setFont("times", "bold");
+                    pdf.text(`• ${partes[0]}`, margin, textY);
+                    pdf.setFont("times", "normal");
+                    pdf.text(`: ${riesgoData["Alto riesgo de AOS"]}`, margin + 30, textY);
+                } else if (line.includes("Riesgo intermedio:")) {
+                    const partes = line.split(":");
+                    pdf.setFont("times", "bold");
+                    pdf.text(`• ${partes[0]}`, margin, textY);
+                    pdf.setFont("times", "normal");
+                    pdf.text(`: ${riesgoData["Riesgo intermedio de AOS"]}`, margin + 48, textY);
+                } else if (line.includes("Bajo riesgo:")) {
+                    const partes = line.split(":");
+                    pdf.setFont("times", "bold");
+                    pdf.text(`• ${partes[0]}`, margin, textY);
+                    pdf.setFont("times", "normal");
+                    pdf.text(`: ${riesgoData["Bajo riesgo de AOS"]}`, margin + 31, textY);
+                } else {
+                    pdf.setFont("times", "normal");
+                    pdf.text(line, margin, textY);
+                }
+
+                textY += 8;
+            });
+
+
+            // Imagen a la derecha más grande
+            // x + y + ancho + alto
+            // x: horizontal borde izquierdo del pdf
+            pdf.addImage(riesgoImg, "PNG", midX - 5, y, 110, 90);
+
+            // NUEVA Y para sección siguiente
+            y = Math.max(textY, y + 95);
+            y += 10;
+
+            // === LÍNEA HORIZONTAL DIVISORIA ===
+            pdf.setDrawColor(150);
+            pdf.setLineWidth(0.3);
+            pdf.line(margin, y, pageWidth - margin, y);
+            y += 20;
+
+            // === SEGUNDA SECCIÓN ===
+            pdf.setFont("times", "bold");  // titulo
+            pdf.setFontSize(18);
+            pdf.text("Gráfica por Sexo", midX - 70, y);
+            y += 8;
+
+            // Imagen a la izquierda
+            pdf.addImage(sexoImg, "PNG", margin, y, 80, 60);
+
+            // Texto a la derecha
+            const textoSexo = [
+                "Distribución por sexo:",
+                "Cantidad de pacientes según sexo",
+                "registrado:",
+                `Masculino: ${sexoData["Masculino"]}`,
+                `Femenino: ${sexoData["Femenino"]}`
+            ];
+            pdf.setFont("times", "normal");  //texto
+            pdf.setFontSize(15);
+
+            let textSexoY = y + 15; // variable para bajar el texto 
+        
+            textoSexo.forEach(line => {
+                if (line.includes("Masculino:")) {
+                    const partes = line.split(":");
+                    pdf.setFont("times", "bold");
+                    pdf.text(`• ${partes[0]}`, midX + 5, textSexoY);
+                    pdf.setFont("times", "normal");
+                    pdf.text(`: ${sexoData["Masculino"]}`, midX + 35, textSexoY);
+                } else if (line.includes("Femenino:")) {
+                    const partes = line.split(":");
+                    pdf.setFont("times", "bold");
+                    pdf.text(`• ${partes[0]}`, midX + 5, textSexoY);
+                    pdf.setFont("times", "normal");
+                     pdf.text(`: ${sexoData["Femenino"]}`, midX + 35, textSexoY);
+                } else {
+                    pdf.setFont("times", "normal");
+                    pdf.text(line, midX + 5, textSexoY);
+                }
+                textSexoY += 8; //espacio entre texto
+            });
+
+            // === LÍNEA HORIZONTAL DESPUÉS DE LA SEGUNDA GRÁFICA ===
+            pdf.setDrawColor(150);
+            pdf.setLineWidth(0.3);
+            pdf.line(margin, textSexoY + 25, pageWidth - margin, textSexoY + 25); // primer 20 izquierda segundo 20 derecha (nos permite bajar la linea)
+
+            // PIE DE PÁGINA
+            pdf.setFontSize(15);
+            pdf.setTextColor(100); // Gris medio (puedes usar valores del 0 al 255)
+            pdf.text("Departamento de Instrumentación", midX, 287, { align: "center" });
+
+            // DESCARGAR
             
             pdf.save("reporte_estadisticas.pdf");
         } catch (error) {
@@ -195,3 +320,4 @@ canvas {
     });
 </script>
 {% endblock %}
+
