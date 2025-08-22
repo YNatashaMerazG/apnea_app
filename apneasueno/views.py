@@ -124,10 +124,12 @@ def generar_pdf(request, paciente_id):
     return response
 
 #INICIO DE SESION DOCTORES 
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+
 def doctor_login_view(request):
     if request.user.is_authenticated:
-        messages.warning(request, "Ya tienes una sesión iniciada.")
-        return redirect('pacientes_doctor')  # nos dirige a la lista que tiene todo
+        return redirect('pacientes_doctor')  # sin messages.warning
 
     if request.method == 'POST':
         form = DoctorLoginForm(request.POST)
@@ -137,17 +139,18 @@ def doctor_login_view(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 if not user.groups.filter(name='Doctores').exists():
-                    messages.error(request, "No tienes permisos de doctor.")
+                    form.add_error(None, "No tienes permisos de doctor.")  # error general
                     return render(request, 'paginas/doctor_login.html', {'form': form})
 
                 login(request, user)
-                return redirect('pacientes_doctor')  # # nos dirige a la lista que tiene todo
+                return redirect('pacientes_doctor')
             else:
-                messages.error(request, "Credenciales incorrectas.")
+                form.add_error(None, "Credenciales incorrectas.")  # error general
     else:
         form = DoctorLoginForm()
 
     return render(request, 'paginas/doctor_login.html', {'form': form})
+
 
 # Lista que solo mostrara el ID cuando se ingrese uno
 def pacientes(request):
