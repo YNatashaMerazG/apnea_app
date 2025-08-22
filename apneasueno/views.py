@@ -151,16 +151,13 @@ def doctor_login_view(request):
 
     return render(request, 'paginas/doctor_login.html', {'form': form})
 
-
 # Lista que solo mostrara el ID cuando se ingrese uno
 def pacientes(request):
     query = request.GET.get('buscar')
-    pacientes = None
+    pacientes = Paciente.objects.none()  # empieza vacío
 
-    es_doctor = request.user.is_authenticated and request.user.groups.filter(name='Doctores').exists()
-
-    if es_doctor:
-        # Filtramos solo los pacientes asignados a este doctor
+    if request.user.is_authenticated and request.user.groups.filter(name='Doctores').exists():
+        # Solo pacientes asignados a este doctor
         pacientes = Paciente.objects.filter(doctor=request.user)
         if query:
             pacientes = pacientes.filter(
@@ -169,15 +166,16 @@ def pacientes(request):
                 Q(apellidos__icontains=query)
             )
     else:
-        # Pacientes normales solo ven su propio ID
+        # Pacientes normales solo pueden buscar por ID
         if query:
             pacientes = Paciente.objects.filter(id=query)
 
     context = {
         'pacientes': pacientes,
-        'es_doctor': es_doctor,
+        'es_doctor': request.user.is_authenticated and request.user.groups.filter(name='Doctores').exists(),
     }
     return render(request, 'paginas/pacientes/index.html', context)
+
 
 
 
