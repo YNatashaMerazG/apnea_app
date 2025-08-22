@@ -5,6 +5,10 @@
 
 {% block contenido %}
 <div class="container my-4">
+    <div id="loadingPDF" class="alert alert-info text-center mt-3" style="display: none;">
+        ⏳ Generando PDF, por favor espera...
+    </div>
+
     <h4 class="mb-4">📊 Estadísticas de pacientes</h4>
 
     <a href="{% url 'pacientes_doctor' %}" class="btn btn-outline-secondary mb-3">← Volver</a>
@@ -304,15 +308,8 @@ canvas {
         pdf.setTextColor(100); // Gris medio (puedes usar valores del 0 al 255)
         pdf.text("Departamento de Instrumentación", midX, 287, { align: "center" });
 
-
-
         // DESCARGAR
         pdf.save("reporte_estadisticas.pdf");
     });
 </script>
-
-
-
-
-
 {% endblock %}
