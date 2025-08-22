@@ -33,7 +33,7 @@
 <!-- Overlay de carga -->
 <div id="loadingOverlay" 
      style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
-            background:rgba(0,0,0,0.6); z-index:9999; display:flex; 
+            background:rgba(0,0,0,0.6); z-index:9999; 
             align-items:center; justify-content:center; color:white; font-size:20px; 
             flex-direction:column;">
     <div class="spinner-border text-light" role="status"></div>
@@ -116,7 +116,7 @@ canvas {
                 y: { beginAtZero: true, precision: 0 }
             },
             plugins: {
-                legend: { display: true, position: "top" } // ✅ mostrar leyenda en barra
+                legend: { display: true, position: "top" } 
             }
         }
     });
