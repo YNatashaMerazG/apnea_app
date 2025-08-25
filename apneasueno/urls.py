@@ -9,6 +9,7 @@ urlpatterns = [
     path('admin/', admin.site.urls), # Acceso a la administracion
     path('', views.inicio, name='inicio'), # Pagina principal 
     path('pacientes', views.pacientes, name='pacientes'), #lista de pacientes (solo busqueda)
+    path('pacientes/crear', views.crear, name='crear'), # Formulario para crear paciente (doctor)
     path('eliminar/<str:id>', views.eliminar, name='eliminar'), # Eliminar paciente
     path('pacientes/editar/<str:id>', views.editar, name='editar'), # Boton editar (para doctor) | se coloco str para numeros y letras en ID 
     path('paciente_login', views.paciente_login, name='paciente_login'), # formulario para crear paciente (paciente)

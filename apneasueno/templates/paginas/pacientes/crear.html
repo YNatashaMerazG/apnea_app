@@ -1,10 +1,8 @@
-
-<!-- Formulario--> 
- {% extends "paginas/base.html" %} 
- {% block titulo %} Cuestionario {% endblock %} 
- {% block contenido %} 
- <div class="contenedor-form"> 
-    <h4>Datos del paciente</h4> 
-    {% include 'paginas/pacientes/form.html' %} 
- </div> 
- {% endblock %}
+{% extends "paginas/base.html" %}
+{% block titulo %} Cuestionario {% endblock %}
+{% block contenido %}
+<div class="contenedor-form">
+  <h4>Datos del paciente</h4>
+  {% include 'paginas/pacientes/form.html' %}
+</div>
+{% endblock %}
