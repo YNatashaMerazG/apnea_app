@@ -22,8 +22,8 @@ from weasyprint import HTML
 
 # Archivos locales (propios de la app)
 from .models import Paciente, PerfilDoctor
+from .forms import PacienteForm      
 from .models import (
-    PacienteForm,
     DoctorRegisterForm,
     DoctorLoginForm,
     RestablecerContrasenaForm,
