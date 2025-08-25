@@ -63,6 +63,21 @@ def paciente_exito(request, paciente_id):
     paciente = Paciente.objects.get(id=paciente_id)
     return render(request, 'paginas/pacientes/exito.html', {'paciente': paciente})
 
+def crear(request):
+    """
+    Vista para registrar un paciente con el cuestionario.
+    - Guarda y redirige al listado de pacientes.
+    """
+    if request.method == 'POST':
+        form = PacienteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('pacientes')
+    else:
+        form = PacienteForm()
+
+    return render(request, 'paginas/pacientes/crear.html', {'form': form})
+
 def editar(request, id):
     """Editar datos de un paciente existente."""
     pacientes = Paciente.objects.get(id=id)
