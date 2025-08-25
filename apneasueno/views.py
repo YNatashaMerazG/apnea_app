@@ -21,13 +21,15 @@ from django.utils import timezone
 from weasyprint import HTML
 
 # Archivos locales (propios de la app)
+# Archivos locales (propios de la app)
 from .models import Paciente, PerfilDoctor
-from .forms import PacienteForm      
-from .models import (
+from .forms import (
+    PacienteForm,
     DoctorRegisterForm,
     DoctorLoginForm,
     RestablecerContrasenaForm,
 )
+
 
 # ==============================================
 # VISTAS PRINCIPALES
