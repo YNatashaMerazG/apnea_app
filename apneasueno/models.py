@@ -1,9 +1,25 @@
+# ==========================================
+# Definición de modelos de la aplicación
+# Incluye:
+#   - Paciente: datos médicos y personales + cálculo STOP-BANG
+#   - PerfilDoctor: extensión del modelo User
+# ==========================================
+
 from django.db import models
 from django.contrib.auth.models import User
 
+# ============================
+# Modelo Paciente
+# ============================
+
 class Paciente(models.Model):
+    """
+    Modelo que representa a un paciente con datos personales,
+    antropométricos y respuestas al cuestionario STOP-BANG.
+    """
+    # Identificación
     id = models.CharField(primary_key=True, max_length=20, verbose_name='ID o Número de Expediente')
-    doctor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)  # doctor asignado
+    doctor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, help_text="Doctor asignado al paciente")  # doctor asignado
 
     # Datos personales
     nombres = models.CharField(max_length=50, verbose_name='Nombre(s)', null=True)
@@ -30,11 +46,18 @@ class Paciente(models.Model):
     puntuacion_stopbang = models.PositiveIntegerField(verbose_name='Puntuación STOP-BANG', null=True, editable=False)
     riesgo = models.CharField(max_length=20, verbose_name='Nivel de riesgo', null=True, editable=False)
 
-
+    # Representación en admin y consultas
     def __str__(self):
         return f'{self.id} - {self.nombres} {self.apellidos}'
 
     def save(self, *args, **kwargs):
+        """
+        Sobrescribe save() para calcular automáticamente:
+        - IMC
+        - Puntuación STOP-BANG
+        - Nivel de riesgo asociado
+        """
+
         # Calcular IMC si se tiene peso y estatura
         if self.estatura and self.peso:
             self.imc = round(self.peso / (self.estatura ** 2), 2)
@@ -61,8 +84,14 @@ class Paciente(models.Model):
 
         super().save(*args, **kwargs)
 
-#Perfil del Doctor
+# ============================
+# Modelo PerfilDoctor
+# ============================
 class PerfilDoctor(models.Model):
+    """
+    Extiende el modelo User de Django con un campo adicional (NIP), 
+    para recuperacion de contrasena
+    """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     nip = models.CharField(max_length=5)
 
