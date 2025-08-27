@@ -5,14 +5,19 @@
 {% block contenido %}
 <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
   <div class="card shadow-lg p-4 rounded-4" style="width: 100%; max-width: 420px;">
+
+    <!-- Encabezado -->
     <div class="text-center mb-4">
       <h2 class="fw-bold text-primary">Inicio de Sesión</h2>
       <h5 class="text-secondary">Doctor</h5>
     </div>
     
+    <!-- Formulario -->
     <form method="post" class="form-login">
       {% csrf_token %}
-      {{ form.as_p }}
+      <div class="mb-3">
+        {{ form.as_p }}
+      </div>
       
       <div class="d-grid gap-2 mt-3">
         <button type="submit" class="btn btn-primary btn-lg">
@@ -23,7 +28,8 @@
         </a>
       </div>
     </form>
-
+    
+    <!-- Link de recuperación -->
     <p class="mt-4 text-center">
       <a href="{% url 'recuperar_contrasena' %}" class="text-decoration-none">
         ¿Olvidaste tu contraseña?
