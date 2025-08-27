@@ -4,6 +4,7 @@
 import os
 import base64
 from datetime import datetime
+from urllib import request
 
 # Librerías de Django
 from django.shortcuts import render, redirect, get_object_or_404
@@ -294,8 +295,11 @@ def restablecer_contrasena(request):
             user = User.objects.get(username=username)
             user.set_password(nueva_contrasena)
             user.save()
-            #messages.success(request, 'Contraseña actualizada correctamente.')
+            messages.success(request, 'Contraseña actualizada correctamente.')
+            storage = messages.get_messages(request)
+            storage.used = True  # ⚡ evita que se repitan
             return redirect('doctor_login')
+
         else:
             messages.error(request, 'Corrige los errores del formulario.')
     else:
