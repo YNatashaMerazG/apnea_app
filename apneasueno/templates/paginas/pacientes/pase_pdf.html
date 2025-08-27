@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Pase de estudio AOS</title>
+
+    <!-- ESTILOS CSS INTERNOS -->
     <style>
+         /* ======== ESTILOS GENERALES ======== */
         body {
             font-family: Arial, sans-serif;
             margin: 40px;
@@ -17,11 +20,12 @@
             border-radius: 10px;
         }
 
+        /* ======= ENCABEZADO ======= */
         .header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            /* espacio entre los elementos */
+            align-items: center;  /* espacio entre los elementos */
+           
         }
 
         .logo-container {
@@ -47,6 +51,8 @@
             text-align: right;
             font-size: 0.9rem;
         }
+
+         /* ======= CLASES PARA RIESGO ======= */
         .riesgo {
             padding: 10px;
             border-radius: 5px;
@@ -69,17 +75,21 @@
             color: white;
         }
 
+        /* ======= RECOMENDACIONES ======= */
         .recomendacion {
             margin-top: 20px;
             font-size: 1rem;
         }
 
+        /* ======= PIE DE PÁGINA ======= */
         .footer {
             text-align: center;
             font-size: 0.8rem;
             margin-top: 60px;
             color: #777;
         }
+
+        /* ======= LÍNEA DIVISORIA ======= */
         .linea-divisoria {
             border: none;
             height: 2px;
@@ -92,16 +102,20 @@
 <body>
 
 
-    <!-- ENCABEZADO CON LOGO, TITULO CENTRADO Y FECHA -->
+        <!-- ========== ENCABEZADO CON LOGO, TÍTULO Y FECHA ========== -->
+
     <div class="header">
         <div class="logo-container">
+            <!-- Logo cargado en base64 para que siempre se muestre en el PDF -->
             <img src="data:image/png;base64,{{ logo_base64 }}" alt="Logo" style="width:100px; height:auto;">
         </div>
 
+            <!-- Título centrado -->
         <div class="titulo-centro">
             Laboratorio del sueño
         </div>
 
+        <!-- Fecha actual -->
         <div class="fecha">
             Fecha: {{ fecha_actual }}
         </div>
@@ -110,15 +124,16 @@
     <!--  LINEA QUE DIVIDE   -->
     <hr class="linea-divisoria">
 
-
+        <!-- Título principal -->
     <h2 class="titulo_dos">Evaluación STOP-BANG</h2>
 
-
+    <!-- ========== INFORMACIÓN DEL PACIENTE ========== -->
     <div class="container">
         <p><strong>Nombre:</strong> {{ paciente.nombres }} {{ paciente.apellidos }}</p>
         <p><strong>ID:</strong> {{ paciente.id }}</p>
         <p><strong>Puntuación:</strong> {{ paciente.puntuacion_stopbang }}</p>
 
+            <!-- Nivel de riesgo con estilo dinámico según el resultado -->
         <p>
             <strong>Riesgo:</strong>
             <span class="riesgo 
@@ -130,6 +145,7 @@
             </span>
         </p>
 
+            <!-- Recomendaciones personalizadas según el nivel de riesgo -->
         <div class="recomendacion">
             {% if paciente.riesgo == 'Alto riesgo de AOS' %}
                 <p><strong>Recomendación:</strong> Usted presenta un <u>alto riesgo</u> de Apnea Obstructiva del Sueño (AOS). Es <b>urgente</b> que acuda a una evaluación clínica y estudios de sueño especializados.</p>
@@ -141,7 +157,7 @@
         </div>
     </div>
 
-    <!-- PIE DE PÁGINA -->
+    <!-- ========== PIE DE PÁGINA ========== -->
     <div class="footer">
         Clínica del Sueño. <br>
         Departamento de Instrumentación Electromecánica.
