@@ -295,7 +295,7 @@ def restablecer_contrasena(request):
             user.set_password(nueva_contrasena)
             user.save()
             messages.success(request, 'Contraseña actualizada correctamente.')
-            return render(request, 'paginas/doctor_login.html')
+            return redirect('doctor_login')
         else:
             messages.error(request, 'Corrige los errores del formulario.')
     else:
