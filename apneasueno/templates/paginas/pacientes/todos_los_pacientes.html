@@ -1,24 +1,29 @@
 {% extends "paginas/base.html" %}
+{# Usamos la plantilla base.html como estructura principal #}
 
 {% block titulo %} Lista completa de pacientes {% endblock %}
+{# Título que se mostrará en la pestaña/navegador y en la cabecera de la página #}
 
 {% block contenido %}
 <div class="card">
+        <!-- Encabezado de la tarjeta -->
     <div class="card-header d-flex justify-content-between align-items-center">
         <h4 class="mb-0">Todos los pacientes</h4>
             <a class="btn btn-outline-primary me-2" href="{% url 'graficas' %}">📊 Ver estadísticas</a>
             <a class="btn btn-outline-danger px-4" href="{% url 'inicio' %}">❌ Volver</a>
     </div>
 
-
     <div class="card-body">
+            <!-- Formulario de búsqueda de pacientes -->
         <form method="GET" class="d-flex mb-3" role="search">
+                <!-- Input de búsqueda, mantiene el valor introducido -->
             <input class="form-control me-2" type="search" placeholder="Buscar paciente por nombre, apellido o ID..." name="buscar" value="{{ request.GET.buscar }}">
             <button class="btn btn-outline-primary" type="submit">Buscar</button>
             <a href="{% url 'pacientes_doctor' %}" class="btn btn-outline-secondary">Borrar</a>
         </form>
 
         {% if pacientes %}
+            <!-- Si existen pacientes, se muestra la tabla -->
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -36,6 +41,7 @@
                         <td>{{ Paciente.id }}</td>
                         <td>{{ Paciente.nombres }} {{ Paciente.apellidos }}</td>
                         <td>{{ Paciente.puntuacion_stopbang }}</td>
+                            <!-- Columna de riesgo con colores dinámicos según el nivel -->
                         <td
                             style="min-width: 200px;"
                             {% if Paciente.riesgo == 'Alto riesgo de AOS' %}
@@ -48,6 +54,7 @@
                         >
                             {{ Paciente.riesgo }}
                         </td>
+                                <!-- Botones de acción -->
                         <td>
                             <a href="{% url 'generar_pdf' Paciente.id %}" class="btn btn-info btn-sm me-1" target="_blank">PDF</a>
                             <a class="btn btn-secondary btn-sm me-1" href="{% url 'editar' Paciente.id %}">Editar</a>
@@ -59,6 +66,7 @@
             </table>
         </div>
         {% else %}
+            <!-- Si no existen pacientes, mostramos un mensaje de advertencia -->
         <div class="alert alert-warning">No se encontraron pacientes.</div>
         {% endif %}
     </div>
