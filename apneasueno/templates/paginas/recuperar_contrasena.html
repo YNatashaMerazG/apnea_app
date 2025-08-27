@@ -64,11 +64,11 @@
 
     <!-- Mensajes -->
     {% if messages %}
-      {% for message in messages %}
-        <div class="alert alert-warning mt-3 mb-0 text-center">
-          {{ message }}
-        </div>
-      {% endfor %}
+      <div class="alert alert-warning mt-3">
+        {% for message in messages %}
+          <div>{{ message }}</div>
+        {% endfor %}
+      </div>
     {% endif %}
   </div>
 </div>
