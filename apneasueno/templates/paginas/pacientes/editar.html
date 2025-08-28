@@ -4,27 +4,34 @@
 
 {% block contenido %}
 <div class="card">
+    <!-- Encabezado de la tarjeta -->
     <div class="card-header d-flex justify-content-between align-items-center">
         <h4 class="mb-0">Todos los pacientes</h4>
     </div>
 
+    <!-- Cuerpo con el formulario -->
     <div class="card-body">
         <form method="POST">
-            {% csrf_token %}
+            {% csrf_token %} <!-- Protección contra ataques CSRF -->
             
+            <!-- Recorremos los campos del formulario dinámicamente -->
             {% for field in formulario %}
                 <div class="mb-3">
+                     <!-- Etiqueta del campo -->
                     {{ field.label_tag }}
+                    <!-- Campo del formulario (input, select, etc.) -->
                     {{ field }}
                     {% if field.help_text %}
                         <div class="form-text">{{ field.help_text }}</div>
                     {% endif %}
+                    <!-- Errores de validación en este campo -->
                     {% for error in field.errors %}
                         <div class="text-danger">{{ error }}</div>
                     {% endfor %}
                 </div>
             {% endfor %}
 
+            <!-- botones de accion-->
             <button type="submit" class="btn btn-primary">💾 Guardar cambios</button>
             <a href="{% url 'pacientes_doctor' %}" class="btn btn-secondary">Cancelar</a> 
         </form>
