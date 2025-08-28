@@ -1,8 +1,13 @@
 {% extends "paginas/base.html" %}
+<!--  Extiende de la plantilla base (estructura principal)   -->
 {% block titulo %} Cuestionario {% endblock %}
+<!-- Título de la página  -->
+
 {% block contenido %}
 <div class="contenedor-form">
+  <!-- Encabezado de la sección -->
   <h4>Datos del paciente</h4>
+    <!--  Se incluye un fragmento (formulario) que está en otra plantilla -->
   {% include 'paginas/pacientes/form.html' %}
 </div>
 {% endblock %}
