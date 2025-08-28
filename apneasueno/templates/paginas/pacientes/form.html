@@ -5,6 +5,7 @@
       Cuestionario STOP-BANG
     </div>
 
+    <!-- Estilo extra para los <select> -->
     <style>
       select {
         height: 38px; /* igual que un input bootstrap */
@@ -14,10 +15,9 @@
       }
     </style>
 
-
-
     <div class="card-body p-4">
 
+     <!-- Mostrar mensajes de Django -->
     {% if messages %}
       {% for message in messages %}
         <div class="alert alert-success text-center mb-3">
@@ -35,7 +35,7 @@
       {% endif %}
     {% endif %}
 
-
+      <!-- Formulario principal -->
       <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
         {% csrf_token %}
         {{ form.as_p }}
@@ -52,12 +52,13 @@
           <span class="badge bg-warning text-dark fs-6" id="stopbang_score">--</span>
         </div>
 
+        <!--  Riesgo estimado -->
         <div class="mb-3">
           <label class="form-label fw-bold">Riesgo estimado:</label>
           <div id="stopbang_risk" class="alert alert-secondary py-2 px-3 mb-0">--</div>
         </div>
 
-        <!-- Botones -->
+        <!-- Botones de acción -->
         <div class="d-flex justify-content-between mt-4">
           <input class="btn btn-success px-4" type="submit" value="✅ Enviar información" />
           <a class="btn btn-outline-danger px-4" href="{% url 'inicio' %}">❌ Cancelar</a>
@@ -67,16 +68,19 @@
   </div>
 </div>
 
+<!-- ================== SCRIPTS ================== -->
 
 <!-- Script para calcular IMC en tiempo real -->
 <script>
   function calcularIMC() {
     const peso = parseFloat(document.getElementById('id_peso')?.value);
     const estatura = parseFloat(document.getElementById('id_estatura')?.value);
+
+    // Fórmula IMC = peso / estatura²
     const imc = peso && estatura ? (peso / (estatura ** 2)).toFixed(2) : '--';
     document.getElementById('imc_display').innerText = imc;
 
-    // También recalculamos STOP-BANG si IMC cambia
+    // Recalcular STOP-BANG automáticamente
     calcularSTOPBANG(imc);
   }
 
@@ -94,16 +98,15 @@
     if (observado === 'True') puntos++;
     if (presion_alta === 'True') puntos++;
 
-
-    // IMC
+    // IMC mayor a 35 suma 1 punto
     const imc = parseFloat(imcValue);
     if (imc && imc > 35) puntos++;
 
-    // Circunferencia del cuello
+     // Circunferencia de cuello mayor a 40 cm suma 1 punto
     const cuello = parseFloat(document.getElementById('id_cuello')?.value);
     if (cuello && cuello > 40) puntos++;
 
-    // Mostrar puntaje
+    // Mostrar puntaje total
     document.getElementById('stopbang_score').innerText = `${puntos} / 6`;
 
     // Mostrar riesgo
@@ -140,7 +143,7 @@
       e.preventDefault(); // Bloquear envío
       alert("⚠️ Debes calcular IMC, puntuación y riesgo antes de enviar.");
 
-      // 🔹 Resetear todos los inputs dentro del formulario
+      // Resetear todos los inputs dentro del formulario
       this.querySelectorAll("input").forEach(el => {
         if (el.type === "text" || el.type === "number" || el.type === "email") {
           el.value = ""; // limpia campos de texto/número/email
@@ -150,7 +153,7 @@
         }
       });
 
-      // 🔹 Resetear visualización
+      // Resetear visualización de resultados
       document.getElementById("imc_display").innerText = "--";
       document.getElementById("stopbang_score").innerText = "--";
       document.getElementById("stopbang_risk").innerText = "--";
