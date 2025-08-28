@@ -5,14 +5,21 @@
 {% block contenido %}
 <div class="container mt-5">
   <div class="card shadow rounded-4">
+
+    <!-- Encabezado de la tarjeta -->
     <div class="card-header bg-success text-white text-center fs-4">
       ✅ Registro Completado
     </div>
+
+    <!-- Cuerpo del mensaje -->
     <div class="card-body p-4 text-center">
+
+      <!-- Mensaje con el nombre del paciente registrado -->
       <p class="fs-5">El paciente <strong>{{ paciente.nombre }}</strong> ha sido registrado correctamente.</p>
+      <!-- Mostrar número de expediente (ID asignado automáticamente en BD) -->
       <p><strong>Número de expediente:</strong> {{ paciente.id }}</p>
 
-      <!-- Botón para ir al detalle del paciente o generar PDF -->
+      <!-- Botones de accion -->
       <div class="mt-4 d-flex justify-content-center gap-3">
         <a href="{% url 'inicio' %}" class="btn btn-primary px-4">
           🏠 Ir al inicio
