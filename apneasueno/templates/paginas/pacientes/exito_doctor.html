@@ -5,16 +5,20 @@
 {% block contenido %}
 <div class="container mt-5">
   <div class="card shadow rounded-4">
+     <!--  Encabezado verde indicando éxito -->
     <div class="card-header bg-success text-white text-center fs-4">
       ✅ Doctor Registrado
     </div>
+    <!-- Cuerpo del mensaje -->
     <div class="card-body p-4 text-center">
+
+       <!-- Mensaje de confirmación -->
         <p class="fs-5">
             Doctor registrado correctamente.
         </p>
 
-
       <div class="mt-4 d-flex justify-content-center gap-3">
+        <!-- Enlace al login de doctor -->
         <a href="{% url 'doctor_login' %}" class="btn btn-primary px-4">
           Iniciar sesión
         </a>
