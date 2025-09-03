@@ -188,7 +188,7 @@ canvas {
             pdf.addImage(logoBase64, "PNG", margin, 10, 20, 20);
             pdf.setFont("times", "bold");
             pdf.setFontSize(25);
-            pdf.text("Unidad del Sueño", midX, 18, { align: "center" });
+            pdf.text("Laboratorio del sueño", midX, 18, { align: "center" });
 
             const fecha = new Date().toLocaleDateString();
             pdf.setFont("times", "italic");
@@ -317,7 +317,8 @@ canvas {
             // PIE DE PÁGINA
             pdf.setFontSize(15);
             pdf.setTextColor(100); // Gris medio (puedes usar valores del 0 al 255)
-            pdf.text("Departamento de Instrumentación", midX, 287, { align: "center" });
+            pdf.text("Clínica del Sueño.", midX, 287, { align: "center" });
+            pdf.text("Departamento de Instrumentación Electromecánica.", midX, 287, { align: "center" });
 
             // DESCARGAR
             
