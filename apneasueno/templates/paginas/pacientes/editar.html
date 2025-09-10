@@ -9,13 +9,23 @@
         <h4 class="mb-0">Todos los pacientes</h4>
     </div>
 
-    <!-- CSS para que los inputs/select ocupen todo el ancho -->
+    <!-- CSS para arreglar inputs y selects -->
     <style>
-        form .form-control,
+        form input,
+        form textarea {
+            width: 100% !important;
+            max-width: 100% !important;
+            display: block;
+        }
+
         form select {
             width: 100% !important;
             max-width: 100% !important;
             display: block;
+            height: auto !important;        /* 👈 evita que se corte el texto */
+            padding: 0.375rem 0.75rem;      /* 👈 mismo estilo que inputs */
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
         }
     </style>
 
@@ -45,3 +55,4 @@
     </div>
 </div>
 {% endblock %}
+
