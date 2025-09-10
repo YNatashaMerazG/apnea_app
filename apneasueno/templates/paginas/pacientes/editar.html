@@ -12,26 +12,30 @@
     <!-- Cuerpo con el formulario -->
     <div class="card-body">
         <form method="POST">
-            {% csrf_token %}
+            {% csrf_token %} <!-- Protección contra ataques CSRF -->
             
+            <!-- Recorremos los campos del formulario dinámicamente -->
             {% for field in formulario %}
                 <div class="mb-3">
+                     <!-- Etiqueta del campo -->
                     {{ field.label_tag }}
-                    {{ field|add_class:"form-control w-100" }}  <!-- 👈 solo esta línea -->
-                    
+                    <!-- Campo del formulario (input, select, etc.) -->
+                    {{ field }}
                     {% if field.help_text %}
                         <div class="form-text">{{ field.help_text }}</div>
                     {% endif %}
-                    
+                    <!-- Errores de validación en este campo -->
                     {% for error in field.errors %}
                         <div class="text-danger">{{ error }}</div>
                     {% endfor %}
                 </div>
             {% endfor %}
 
+            <!-- botones de accion-->
             <button type="submit" class="btn btn-primary">💾 Guardar cambios</button>
             <a href="{% url 'pacientes_doctor' %}" class="btn btn-secondary">Cancelar</a> 
         </form>
     </div>
 </div>
 {% endblock %}
+
