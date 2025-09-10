@@ -1,5 +1,7 @@
 {% extends "paginas/base.html" %}
 
+{% load widget_tweaks %}
+
 {% block titulo %} Editar Paciente {% endblock %}
 
 {% block contenido %}
@@ -20,7 +22,7 @@
                      <!-- Etiqueta del campo -->
                     {{ field.label_tag }}
                     <!-- Campo del formulario (input, select, etc.) -->
-                    {{ field }}
+                    {{ field|add_class:"form-control w-100" }}
                     {% if field.help_text %}
                         <div class="form-text">{{ field.help_text }}</div>
                     {% endif %}
