@@ -9,40 +9,39 @@
         <h4 class="mb-0">Todos los pacientes</h4>
     </div>
 
+    <!-- CSS para que los inputs/select ocupen todo el ancho -->
     <style>
-    input, select, textarea {
-        width: 100% !important;
-        max-width: 100% !important;
-    }
+        form .form-control,
+        form select {
+            width: 100% !important;
+            max-width: 100% !important;
+            display: block;
+        }
     </style>
 
     <!-- Cuerpo con el formulario -->
     <div class="card-body">
         <form method="POST">
-            {% csrf_token %} <!-- Protección contra ataques CSRF -->
+            {% csrf_token %}
             
-            <!-- Recorremos los campos del formulario dinámicamente -->
             {% for field in formulario %}
                 <div class="mb-3">
-                     <!-- Etiqueta del campo -->
                     {{ field.label_tag }}
-                    <!-- Campo del formulario (input, select, etc.) -->
                     {{ field }}
+                    
                     {% if field.help_text %}
                         <div class="form-text">{{ field.help_text }}</div>
                     {% endif %}
-                    <!-- Errores de validación en este campo -->
+                    
                     {% for error in field.errors %}
                         <div class="text-danger">{{ error }}</div>
                     {% endfor %}
                 </div>
             {% endfor %}
 
-            <!-- botones de accion-->
             <button type="submit" class="btn btn-primary">💾 Guardar cambios</button>
             <a href="{% url 'pacientes_doctor' %}" class="btn btn-secondary">Cancelar</a> 
         </form>
     </div>
 </div>
 {% endblock %}
-
