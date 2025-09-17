@@ -106,26 +106,34 @@ canvas {
     });
 
     // === Gráfica de Sexo (Barras) ===
-    const sexoCtx = document.getElementById('sexoChart').getContext('2d');
-    new Chart(sexoCtx, {
-        type: 'bar',
-        data: {
-            labels: ['Masculino', 'Femenino'],
-            datasets: [{
+const sexoCtx = document.getElementById('sexoChart').getContext('2d');
+new Chart(sexoCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Masculino', 'Femenino'],
+        datasets: [
+            {
                 label: 'Cantidad',
-                data: [sexoData["Masculino"], sexoData["Femenino"]],
-                backgroundColor: ['#0d6efd', '#e83e8c']
-            }]
-        },
-        options: {
-            scales: {
-                y: { beginAtZero: true, precision: 0 }
+                data: [sexoData["Masculino"], null], // solo masculino
+                backgroundColor: '#0d6efd'
             },
-            plugins: {
-                legend: { display: true, position: "top" } 
+            {
+                label: 'Cantidad',
+                data: [null, sexoData["Femenino"]], // solo femenino
+                backgroundColor: '#e83e8c'
             }
+        ]
+    },
+    options: {
+        scales: {
+            y: { beginAtZero: true, precision: 0 }
+        },
+        plugins: {
+            legend: { display: true, position: "top" }
         }
-    });
+    }
+});
+
 </script>
 
 <!-- === Descargar PDF con jsPDF === -->
