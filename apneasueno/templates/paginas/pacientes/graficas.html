@@ -111,10 +111,18 @@ new Chart(sexoCtx, {
     type: 'bar',
     data: {
         labels: ['Masculino', 'Femenino'],
-        datasets: [{
-            data: [sexoData["Masculino"], sexoData["Femenino"]],
-            backgroundColor: ['#0d6efd', '#e83e8c']
-        }]
+        datasets: [
+            {
+                label: 'Masculino',
+                data: [sexoData["Masculino"], 0],
+                backgroundColor: '#0d6efd'
+            },
+            {
+                label: 'Femenino',
+                data: [0, sexoData["Femenino"]],
+                backgroundColor: '#e83e8c'
+            }
+        ]
     },
     options: {
         scales: {
